@@ -106,8 +106,8 @@
             position: relative;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             
-            /* **[메인 배너]** 캡처.PNG ID 유지 */
-            background-image: url('uploaded:캡처.PNG-d0747af5-8800-40fc-b692-9d6514229b68'); 
+            /* **[메인 배너 이미지 경로 수정]** */
+            background-image: url('./images/캡처.PNG'); 
             background-size: cover;
             background-position: center;
             height: 250px; 
@@ -374,20 +374,20 @@
 
         // --- 월별 데이터 및 렌더링 함수 ---
         
-        // 업로드된 이미지 ID에 기반한 월별 데이터 설정
+        // **[이미지 경로 수정 완료]**
         const monthData = [
-            { title: "새해 다짐", desc: "새해 목표 설정과 실행 계획", imageUrl: "uploaded:1.PNG-822a1ec9-44be-4aef-8310-a237a8a58cd8" }, 
-            { title: "부산 맛집 탐방", desc: "나만의 미식 가이드", imageUrl: "uploaded:2.PNG-d590ff7e-8353-47f3-8249-24e34cca5f0b" }, 
-            { title: "봄의 시작", desc: "설렘 가득한 봄맞이 준비", imageUrl: "uploaded:3.PNG-1e9d15c6-80e5-4171-8032-00e0d81f6a0a" }, 
-            { title: "피크닉의 설렘", desc: "완벽한 주말 피크닉 레시피", imageUrl: "uploaded:4.PNG-f5967194-b3c8-4ea9-b0b0-8f2c6b12864f" }, 
-            { title: "가정의 달", desc: "감사와 사랑을 전하는 방법", imageUrl: "uploaded:5.PNG-68c95f66-0a15-4a85-8ba7-6e465a2aaf69" }, 
-            { title: "반려동물과 함께", desc: "우리 아이와의 행복한 일상", imageUrl: "uploaded:6.PNG-e9b69e04-f0c4-4fc3-a84c-2bd71458f583" },
-            { title: "한여름 이야기", desc: "무더위를 이기는 시원한 팁", imageUrl: "uploaded:7.PNG-69db527e-1026-435d-98e1-00f4097c107c" }, 
-            { title: "나만의 휴가", desc: "꿈에 그리던 휴가지 이야기", imageUrl: "uploaded:8.PNG-ee601ad5-5d2e-4766-b3f0-9f4e09448436" }, 
-            { title: "나의 스타일", desc: "나를 표현하는 옷 스타일링 비법", imageUrl: "uploaded:9.PNG-37d8cfd3-a9bd-4294-913b-92127b832e42" }, 
-            { title: "가을 분위기", desc: "사색에 잠기는 가을날의 일상", imageUrl: "uploaded:10.PNG-2d14dee4-96f3-4028-9199-29cd43aeafd3" }, 
-            { title: "삶을 변화시키는 이야기", desc: "내 삶을 변화시키는 영감", imageUrl: "uploaded:11.PNG-1fb6281a-021e-47f3-ae56-ad5323d992de" }, 
-            { title: "따뜻한 겨울", desc: "따뜻한 연말연시 계획", imageUrl: "uploaded:12.PNG-8674d77b-0ad7-4d6c-b95c-beb068ca17d1" }
+            { title: "새해 다짐", desc: "새해 목표 설정과 실행 계획", imageUrl: "./images/1.PNG" }, 
+            { title: "부산 맛집 탐방", desc: "나만의 미식 가이드", imageUrl: "./images/2.PNG" }, 
+            { title: "봄의 시작", desc: "설렘 가득한 봄맞이 준비", imageUrl: "./images/3.PNG" }, 
+            { title: "피크닉의 설렘", desc: "완벽한 주말 피크닉 레시피", imageUrl: "./images/4.PNG" }, 
+            { title: "가정의 달", desc: "감사와 사랑을 전하는 방법", imageUrl: "./images/5.PNG" }, 
+            { title: "반려동물과 함께", desc: "우리 아이와의 행복한 일상", imageUrl: "./images/6.PNG" },
+            { title: "한여름 이야기", desc: "무더위를 이기는 시원한 팁", imageUrl: "./images/7.PNG" }, 
+            { title: "나만의 휴가", desc: "꿈에 그리던 휴가지 이야기", imageUrl: "./images/8.PNG" }, 
+            { title: "나의 스타일", desc: "나를 표현하는 옷 스타일링 비법", imageUrl: "./images/9.PNG" }, 
+            { title: "가을 분위기", desc: "사색에 잠기는 가을날의 일상", imageUrl: "./images/10.PNG" }, 
+            { title: "삶을 변화시키는 이야기", desc: "내 삶을 변화시키는 영감", imageUrl: "./images/11.PNG" }, 
+            { title: "따뜻한 겨울", desc: "따뜻한 연말연시 계획", imageUrl: "./images/12.PNG" }
         ];
         
         const ebooks = [];
@@ -399,14 +399,13 @@
                 title: `${i}호: ${monthInfo.title}`,
                 description: monthInfo.desc,
                 imageUrl: monthInfo.imageUrl,
-                // viewer.html을 ?month=i 파라미터와 함께 호출
                 link: `viewer.html?month=${i}` 
             });
         }
 
         /**
          * 전자책 객체를 받아 HTML 카드 문자열을 생성합니다.
-         * !!! target="_blank"를 추가하여 새 탭에서 열리도록 설정 !!!
+         * target="_blank"를 추가하여 새 탭에서 열리도록 설정
          */
         function createEbookCard(ebook) {
             return `
