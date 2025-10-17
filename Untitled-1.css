@@ -1,0 +1,514 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메일하루 | 시민 참여 전자책 도서관</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- CSS Variables for consistent styling --- */
+        :root {
+            --primary-blue: #3f51b5; /* 배너 버튼, 네비게이션 링크 */
+            --text-dark: #202124;
+            --text-gray: #5f6368;
+            --border-light: #dadce0;
+            --main-bg: #f8f9fa; /* 전체 페이지 배경 */
+            --card-bg: white;
+            --card-shadow: 0 4px 6px rgba(60,64,67,0.1), 0 1px 3px rgba(60,64,67,0.08); /* 그림자 강화 */
+        }
+
+        /* --- Global Styles --- */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--main-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Top Navigation Bar --- */
+        .top-nav {
+            background-color: white;
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .top-nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .top-nav .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .top-nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .top-nav-link {
+            color: var(--text-gray);
+            font-weight: 500;
+            transition: color 0.2s;
+            font-size: 0.95em;
+        }
+        .top-nav-link:hover {
+            color: var(--primary-blue);
+        }
+        .top-nav-button {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            font-size: 0.9em;
+        }
+        .top-nav-button:hover {
+            background-color: #303f9f;
+        }
+        .top-nav-icon {
+            font-size: 1.2em;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .top-nav-icon:hover {
+            color: var(--primary-blue);
+        }
+        .top-nav-divider {
+            height: 20px;
+            width: 1px;
+            background-color: var(--border-light);
+            margin: 0 5px;
+        }
+
+        /* --- Hero Banner (업로드된 이미지 사용) --- */
+        .hero-banner {
+            background-color: #3f51b5;
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 40px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            
+            /* **[메인 배너]** 캡처.PNG ID 유지 */
+            background-image: url('uploaded:캡처.PNG-37884d4e-f028-4e54-8d23-4117a5c7ab65'); 
+            background-size: cover;
+            background-position: center;
+            height: 250px; 
+        }
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.5); /* 텍스트 가독성을 위한 어두운 오버레이 */
+            border-radius: 8px;
+        }
+        .hero-banner-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin-left: 40px;
+            text-align: left;
+        }
+        .hero-banner-content h2 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+        }
+        .hero-banner-content p {
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+        .hero-banner-content .banner-button {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-blue);
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+
+        /* --- Section Title --- */
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+            padding-top: 10px;
+        }
+
+        /* --- Ebook List Grid --- */
+        .ebook-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 0;
+            margin-bottom: 40px;
+        }
+
+        /* --- Ebook Card Design --- */
+        .ebook-card {
+            background-color: var(--card-bg);
+            border-radius: 10px; /* 모서리 둥글게 */
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-light);
+        }
+        .ebook-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15); /* 호버 시 그림자 강조 */
+        }
+        
+        /* 이미지 카드를 위한 스타일 */
+        .ebook-card-thumbnail-external {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--border-light);
+            box-sizing: border-box;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-size: 0.9em;
+        }
+
+        .ebook-card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .ebook-card-month {
+            font-size: 0.9em;
+            color: var(--primary-blue); /* 월 강조 */
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .ebook-card-title {
+            font-size: 1.25em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0 0 10px 0;
+            line-height: 1.4;
+        }
+        .ebook-card-description {
+            font-size: 0.9em;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .ebook-card-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-blue);
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .ebook-card-link:hover {
+            color: #303f9f;
+        }
+        .ebook-card-link i {
+            margin-left: 5px;
+            font-size: 0.8em;
+        }
+
+        /* --- Footer --- */
+        .footer-actions {
+            background-color: white;
+            border-top: 1px solid var(--border-light);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer-actions .button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(60,64,67,0.1);
+        }
+        .footer-actions .primary-button {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        .footer-actions .secondary-button {
+            background-color: white;
+            color: var(--primary-blue);
+            border: 1px solid var(--border-light);
+            margin-left: 15px;
+        }
+        
+        /* --- Modal Styles (기존 유지) --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="container top-nav-inner">
+            <a href="#" class="logo">메일하루</a>
+            <div class="top-nav-right">
+                <a href="#" class="top-nav-icon"><i class="fas fa-search"></i></a>
+                <div class="top-nav-divider"></div>
+                <a href="#" class="top-nav-link">본인인증</a>
+                <a href="#" class="top-nav-link">구독신청</a>
+                <a href="#" class="top-nav-button">마이페이지</a>
+                <a href="#" class="top-nav-icon"><i class="fas fa-user-circle"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-banner">
+            <div class="hero-banner-content">
+                <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
+                <p>부산 시민의 일상 생각과 이야기를 담아 매달 발행되는 참여형 전자책 메일링 서비스.</p>
+                <a href="#" class="banner-button" id="bannerSubscribeBtn">✉️ 구독 서비스 신청하기</a>
+            </div>
+        </div>
+
+        <h2 class="section-title">온라인 열람실: 최신 발행호</h2>
+        <div class="ebook-list" id="ebookList">
+            </div>
+    </div>
+
+    <div class="footer-actions">
+        <div class="container">
+            <a href="#" id="footerSubscribeBtn" class="button primary-button"><i class="fas fa-envelope"></i>메일링 서비스 구독</a>
+            <a href="#" id="downloadBtn" class="button secondary-button"><i class="fas fa-download"></i>이 페이지 다운로드</a>
+        </div>
+    </div>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 id="modalTitle" style="color: var(--primary-blue);">알림</h3>
+            <p id="modalBody" style="margin: 20px 0;"></p>
+            <button class="button primary-button" onclick="document.getElementById('infoModal').style.display='none'">확인</button>
+        </div>
+    </div>
+
+    <script>
+        const ebookListElement = document.getElementById('ebookList');
+        const bannerSubscribeBtn = document.getElementById('bannerSubscribeBtn');
+        const footerSubscribeBtn = document.getElementById('footerSubscribeBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const infoModal = document.getElementById('infoModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeButton = document.querySelector('.close-button');
+
+
+        /**
+         * 알림 모달을 보여주는 함수
+         */
+        function showModal(title, body) {
+            modalTitle.textContent = title;
+            modalBody.textContent = body;
+            infoModal.style.display = 'block';
+        }
+
+        // --- 월별 데이터 및 렌더링 함수 ---
+        
+        // **[최종 적용 ID]**
+        const monthData = [
+            // 1월: 새해 다짐
+            { title: "새해 다짐", desc: "새해 목표 설정과 실행 계획", 
+              imageUrl: "uploaded:1.PNG-eef08d9e-edee-49b4-879e-815fab665588" }, 
+            // 2월: 부산 맛집 탐방
+            { title: "부산 맛집 탐방", desc: "나만의 미식 가이드", 
+              imageUrl: "uploaded:2.PNG-d6027969-8bf4-435c-bf97-446f9cb77154" }, 
+            // 3월: 봄의 시작
+            { title: "봄의 시작", desc: "설렘 가득한 봄맞이 준비", 
+              imageUrl: "uploaded:3.PNG-26e1fdaf-800e-465b-92e8-9b89d3034ad8" }, 
+            // 4월: 피크닉의 설렘
+            { title: "피크닉의 설렘", desc: "완벽한 주말 피크닉 레시피", 
+              imageUrl: "uploaded:4.PNG-03bb507c-30fe-49dd-9c21-0010713e6a8e" }, 
+            // 5월: 가정의 달
+            { title: "가정의 달", desc: "감사와 사랑을 전하는 방법", 
+              imageUrl: "uploaded:5.PNG-dd44478f-cc9e-4c9a-97f1-da1bae32e0b6" }, 
+            // 6월: 반려동물과 함께
+            { title: "반려동물과 함께", desc: "우리 아이와의 행복한 일상", 
+              imageUrl: "uploaded:6.PNG-1e98e43a-057e-44fc-85f7-c7d9a459b930" },
+            // 7월: 한여름 이야기
+            { title: "한여름 이야기", desc: "무더위를 이기는 시원한 팁", 
+              imageUrl: "uploaded:7.PNG-916d2f13-a136-42f2-8f1f-afb45a915680" }, 
+            // 8월: 나만의 휴가
+            { title: "나만의 휴가", desc: "꿈에 그리던 휴가지 이야기", 
+              imageUrl: "uploaded:8.PNG-39dbfc6b-1d35-45cc-af12-b0db3096d9d2" }, 
+            // 9월: 나의 스타일
+            { title: "나의 스타일", desc: "나를 표현하는 옷 스타일링 비법", 
+              imageUrl: "uploaded:9.PNG-37d8cfd3-a9bd-4294-913b-92127b832e42" }, 
+            // 10월: 가을 분위기
+            { title: "가을 분위기", desc: "사색에 잠기는 가을날의 일상", 
+              imageUrl: "uploaded:10.PNG-2d14dee4-96f3-4028-9199-29cd43aeafd3" }, 
+            // 11월: 삶을 변화시키는 이야기
+            { title: "삶을 변화시키는 이야기", desc: "내 삶을 변화시키는 영감", 
+              imageUrl: "uploaded:11.PNG-1fb6281a-021e-47f3-ae56-ad5323d992de" }, 
+            // 12월: 따뜻한 겨울
+            { title: "따뜻한 겨울", desc: "따뜻한 연말연시 계획", 
+              imageUrl: "uploaded:12.PNG-8674d77b-0ad7-4d6c-9b5c-beb068ca17d1" }
+        ];
+        
+        const ebooks = [];
+        for (let i = 1; i <= 12; i++) {
+            const monthInfo = monthData[i - 1];
+            ebooks.push({
+                monthNum: i,
+                monthName: `${i}월`,
+                title: `${i}호: ${monthInfo.title}`,
+                description: monthInfo.desc,
+                imageUrl: monthInfo.imageUrl, // 월별 이미지 ID 사용
+                link: `viewer.html?month=${i}` 
+            });
+        }
+
+        /**
+         * 전자책 객체를 받아 HTML 카드 문자열을 생성합니다.
+         */
+        function createEbookCard(ebook) {
+            return `
+                <a href="${ebook.link}" class="ebook-card" title="${ebook.title} 보기">
+                    <div class="ebook-card-thumbnail-external" style="background-image: url('${ebook.imageUrl}');" role="img" aria-label="${ebook.title} 썸네일">
+                        <span class="placeholder-text" style="display:none;">${ebook.monthNum}월호 이미지 (${ebook.title.split(': ')[1]})</span>
+                    </div>
+                    <div class="ebook-card-content">
+                        <div class="ebook-card-month">${ebook.monthNum}월호: ${ebook.monthName}</div>
+                        <h3 class="ebook-card-title">${ebook.title.split(': ')[1]}</h3>
+                        <p class="ebook-card-description">${ebook.description}</p>
+                        <span class="ebook-card-link">
+                            열람하기 <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </a>
+            `;
+        }
+        
+        // --- 기능 함수 (기존 유지) ---
+
+        /**
+         * 현재 페이지의 HTML 내용을 파일로 다운로드합니다.
+         */
+        function downloadFile() {
+            const htmlContent = document.documentElement.outerHTML;
+            const filename = '메일하루_전자책_홈페이지.html';
+            
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            showModal("다운로드 완료", `'${filename}' 파일 다운로드가 시작되었습니다.`);
+        }
+
+        /**
+         * 전자책 목록을 렌더링하는 함수
+         */
+        function renderEbooks() {
+            ebookListElement.innerHTML = ebooks.map(createEbookCard).join('');
+        }
+
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEbooks();
+            
+            // 이벤트 리스너 연결
+            const subscribeHandler = (e) => {
+                e.preventDefault();
+                showModal(
+                    "메일링 서비스 구독",
+                    "이용자 참여형 전자책 '메일하루' 구독 페이지로 이동합니다. (현재 시연 중)"
+                );
+            };
+
+            if (bannerSubscribeBtn) bannerSubscribeBtn.addEventListener('click', subscribeHandler);
+            if (footerSubscribeBtn) footerSubscribeBtn.addEventListener('click', subscribeHandler);
+
+            if (downloadBtn) downloadBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                downloadFile();
+            });
+
+            if (closeButton) closeButton.addEventListener('click', () => {
+                infoModal.style.display = 'none';
+            });
+            window.addEventListener('click', (event) => {
+                if (event.target == infoModal) {
+                    infoModal.style.display = 'none';
+                }
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>

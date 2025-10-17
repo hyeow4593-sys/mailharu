@@ -1,0 +1,169 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">전자책 뷰어 | 메일하루</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f5;
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .viewer-header {
+            padding: 15px;
+            background-color: #3f51b5;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .viewer-header h1 {
+            font-size: 1.2em;
+            margin: 0;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .viewer-container {
+            flex-grow: 1;
+            display: flex;
+            position: relative;
+        }
+        #viewerFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: white;
+        }
+        .loading-message, .error-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #555;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 80%;
+            z-index: 100;
+        }
+        .error-message {
+            color: #d32f2f;
+            border: 2px solid #d32f2f;
+        }
+        .back-button {
+            background: none;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 15px;
+        }
+        .back-button:hover {
+            background-color: #5c6bc0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewer-header">
+        <button class="back-button" onclick="window.history.back()">← 목록으로</button>
+        <h1 id="fileTitle">전자책 로드 중...</h1>
+        <span></span>
+    </div>
+    
+    <div class="viewer-container">
+        <iframe id="viewerFrame"></iframe>
+
+        <div class="loading-message" id="loadingMessage">
+            전자책을 로드하는 중입니다... 잠시만 기다려 주세요.
+        </div>
+        
+        <div class="error-message" id="errorMessage" style="display:none;">
+            ❌ **EPUB 뷰어 로드 실패** ❌<br>
+            파일이 다운로드되는 경우, 다음을 확인하세요:<br>
+            <ol style="text-align: left; margin: 10px auto; padding-left: 20px; max-width: 300px;">
+                <li>**로컬 서버**가 <code>메일하루_전자책_홈페이지.html</code> 폴더에서 실행 중입니까?</li>
+                <li>EPUB 파일(<code>1월호.epub</code> 등)이 <code>epub/</code> 폴더 안에 정확히 존재합니까?</li>
+                <li>EPUB 파일이 **브라우저의 보안 정책** 때문에 직접 로드되지 못하고 있습니다.</li>
+            </ol>
+            <small>해결책: 파일 구조와 서버 실행을 다시 한번 확인해주세요.</small>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function getUrlParameter(name) {
+                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+                const results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            }
+
+            const epubFilePath = getUrlParameter('epub'); 
+            const fileTitleElement = document.getElementById('fileTitle');
+            const viewerFrame = document.getElementById('viewerFrame');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (!epubFilePath) {
+                fileTitleElement.textContent = '오류: EPUB 파일 경로가 지정되지 않았습니다.';
+                return;
+            }
+
+            const fileNameOnly = epubFilePath.split('/').pop(); 
+            fileTitleElement.textContent = `${fileNameOnly.replace('.epub', '')} - 전자책 뷰어`;
+
+            // **[핵심] EPUB 파일 경로를 로컬 서버 경로와 결합**
+            // http://localhost:8000/epub/1월호.epub 와 같은 형태로 만듭니다.
+            let fullEpubUrl = window.location.origin + epubFilePath;
+
+            // 뷰어 프레임에 로드 시도
+            // 1. 구글 뷰어 시도 (보편적인 EPUB 리더기가 없을 때 사용)
+            // viewerFrame.src = `https://docs.google.com/viewer?url=${encodeURIComponent(fullEpubUrl)}&embedded=true`;
+            
+            // 2. 직접 로드 (로컬 서버에서 보안 문제를 우회하기 위해 Content-Type을 강제하지 않는 일반 파일 로드)
+            viewerFrame.src = fullEpubUrl; 
+
+            // 로딩 처리
+            let loadTimer = setTimeout(() => {
+                loadingMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+            }, 5000); // 5초 후에도 로딩이 안되면 오류 메시지 표시
+
+            viewerFrame.onload = function() {
+                clearTimeout(loadTimer);
+                loadingMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+
+                // **파일 다운로드 대신 뷰어가 성공적으로 열렸는지 확인하는 로직 추가 필요**
+                // (iFrame 방식은 뷰어가 열리는지 직접 확인이 어려움. 로딩 메시지가 사라지는 것으로 성공 간주)
+
+            };
+
+            viewerFrame.onerror = function() {
+                clearTimeout(loadTimer);
+                loadingMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+            };
+            
+        });
+    </script>
+
+</body>
+</html>
