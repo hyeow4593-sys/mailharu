@@ -96,7 +96,7 @@
             margin: 0 5px;
         }
 
-        /* --- Hero Banner (업로드된 이미지 사용) --- */
+        /* --- Hero Banner (이미지 경로 수정됨) --- */
         .hero-banner {
             background-color: #3f51b5;
             color: white;
@@ -106,7 +106,7 @@
             position: relative;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             
-            /* **[메인 배너 이미지 경로 수정]** */
+            /* 메인 배너 이미지 경로: images/캡처.PNG */
             background-image: url('./images/캡처.PNG'); 
             background-size: cover;
             background-position: center;
@@ -252,6 +252,7 @@
             cursor: pointer;
             text-align: center;
             box-shadow: 0 1px 3px rgba(60,64,67,0.1);
+            margin: 0 5px; /* 버튼 간격 조정 */
         }
         .footer-actions .primary-button {
             background-color: var(--primary-blue);
@@ -261,7 +262,6 @@
             background-color: white;
             color: var(--primary-blue);
             border: 1px solid var(--border-light);
-            margin-left: 15px;
         }
         
         /* --- Modal Styles (기존 유지) --- */
@@ -339,6 +339,9 @@
     <div class="footer-actions">
         <div class="container">
             <a href="#" id="footerSubscribeBtn" class="button primary-button"><i class="fas fa-envelope"></i>메일링 서비스 구독</a>
+            
+            <a href="https://naver.me/GWizz6tB" target="_blank" class="button secondary-button"><i class="fas fa-edit"></i> 전자책 투고하기</a>
+            
             <a href="#" id="downloadBtn" class="button secondary-button"><i class="fas fa-download"></i>이 페이지 다운로드</a>
         </div>
     </div>
@@ -372,9 +375,7 @@
             infoModal.style.display = 'block';
         }
 
-        // --- 월별 데이터 및 렌더링 함수 ---
-        
-        // **[이미지 경로 수정 완료]**
+        // --- 월별 데이터 및 렌더링 함수 (이미지 경로 수정됨) ---
         const monthData = [
             { title: "새해 다짐", desc: "새해 목표 설정과 실행 계획", imageUrl: "./images/1.PNG" }, 
             { title: "부산 맛집 탐방", desc: "나만의 미식 가이드", imageUrl: "./images/2.PNG" }, 
@@ -399,13 +400,13 @@
                 title: `${i}호: ${monthInfo.title}`,
                 description: monthInfo.desc,
                 imageUrl: monthInfo.imageUrl,
+                // viewer.html을 ?month=i 파라미터와 함께 호출 (새 탭에서 열림)
                 link: `viewer.html?month=${i}` 
             });
         }
 
         /**
          * 전자책 객체를 받아 HTML 카드 문자열을 생성합니다.
-         * target="_blank"를 추가하여 새 탭에서 열리도록 설정
          */
         function createEbookCard(ebook) {
             return `
@@ -429,7 +430,7 @@
 
         function downloadFile() {
             const htmlContent = document.documentElement.outerHTML;
-            const filename = 'index.html'; // 파일명도 index.html로 통일
+            const filename = 'index.html';
             
             const blob = new Blob([htmlContent], { type: 'text/html' });
             
