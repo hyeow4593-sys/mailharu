@@ -75,11 +75,11 @@
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const epubPath = params.get("epub");
+    const epubPath = params.get("epub"); // ex) "epubs/book_spring.epub"
     const bookTitle = params.get("title") || "전자책";
     document.title = `${bookTitle} | 메일하루 전자책`;
 
-    if(!epubPath){
+    if (!epubPath) {
       document.body.innerHTML = '<div class="error-message">❌ ePub 경로가 지정되지 않았습니다.<br>index.html에서 올바른 링크로 접근해주세요.</div>';
       throw new Error("No epub path");
     }
@@ -87,55 +87,50 @@
     const status = document.getElementById("status");
     const reader = document.getElementById("reader");
 
-    // GitHub Pages용 절대 경로
-    const epubURL = new URL(epubPath, window.location.href).href;
-    console.log("📖 EPUB URL:", epubURL);
+    try {
+      status.textContent = "📦 전자책 불러오는 중...";
+      const book = ePub(epubPath); // 상대경로로 바로 로드
+      const rendition = book.renderTo(reader, { width:"100%", height:"100%", spread:"auto" });
 
-    async function startViewer() {
-      try {
-        status.textContent = "📦 전자책 불러오는 중...";
-        const book = ePub(epubURL);
-        const rendition = book.renderTo(reader, { width:"100%", height:"100%", spread:"auto" });
+      let fontSize = 100;
+      rendition.themes.default({
+        "body": { "font-family":"'Noto Sans KR',sans-serif", "line-height":"1.7", "padding":"24px" }
+      });
 
-        let fontSize = 100;
-        rendition.themes.default({
-          "body": { "font-family":"'Noto Sans KR',sans-serif", "line-height":"1.7", "padding":"24px" }
-        });
+      rendition.display();
 
-        rendition.display();
+      book.ready.then(() => status.textContent = "✅ 로드 완료")
+               .catch(err => { console.error(err); status.textContent="⚠️ 로드 중 오류 발생"; });
 
-        book.ready.then(() => status.textContent="✅ 로드 완료")
-                 .catch(err => { console.error(err); status.textContent="⚠️ 로드 중 오류 발생"; });
+      // 상단 버튼 이벤트
+      document.getElementById("btnPrev").onclick = () => rendition.prev();
+      document.getElementById("btnNext").onclick = () => rendition.next();
+      document.getElementById("btnFontUp").onclick = ()=>{
+        fontSize = Math.min(fontSize + 10, 200);
+        rendition.themes.fontSize(fontSize + "%");
+      };
+      document.getElementById("btnFontDown").onclick = ()=>{
+        fontSize = Math.max(fontSize - 10, 60);
+        rendition.themes.fontSize(fontSize + "%");
+      };
 
-        // 상단 버튼 이벤트
-        document.getElementById("btnPrev").onclick = () => rendition.prev();
-        document.getElementById("btnNext").onclick = () => rendition.next();
-        document.getElementById("btnFontUp").onclick = ()=>{
-          fontSize=Math.min(fontSize+10,200); rendition.themes.fontSize(fontSize+"%");
-        };
-        document.getElementById("btnFontDown").onclick = ()=>{
-          fontSize=Math.max(fontSize-10,60); rendition.themes.fontSize(fontSize+"%");
-        };
+      // 중앙 버튼 이벤트
+      document.getElementById("centerPrev").onclick = () => rendition.prev();
+      document.getElementById("centerNext").onclick = () => rendition.next();
 
-        // 중앙 버튼 이벤트
-        document.getElementById("centerPrev").onclick = () => rendition.prev();
-        document.getElementById("centerNext").onclick = () => rendition.next();
+      // 키보드 좌우 이동
+      document.addEventListener("keydown", e=>{
+        if (e.key === "ArrowRight") rendition.next();
+        if (e.key === "ArrowLeft") rendition.prev();
+      });
 
-        // 키보드 좌우 이동
-        document.addEventListener("keydown", e=>{
-          if(e.key==="ArrowRight") rendition.next();
-          if(e.key==="ArrowLeft") rendition.prev();
-        });
-
-      } catch(err){
-        console.error(err);
-        document.body.innerHTML = `<div class="error-message">❌ 전자책을 열 수 없습니다.<br>${err.message}</div>`;
-      }
+    } catch(err) {
+      console.error(err);
+      document.body.innerHTML = `<div class="error-message">❌ 전자책을 열 수 없습니다.<br>${err.message}</div>`;
     }
-
-    startViewer();
   </script>
 </body>
 </html>
+
 
 
