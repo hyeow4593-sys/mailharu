@@ -1,203 +1,160 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>메일하루 전자책 열람실</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메일하루 | 시민 참여 전자책 도서관</title>
+<link rel="shortcut icon" href="data:," type="image/x-icon"> 
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
 <style>
 :root {
-  --primary-blue: #3f51b5;
-  --text-dark: #202124;
-  --text-gray: #5f6368;
-  --border-light: #dadce0;
+    --primary-blue: #3f51b5;
+    --text-dark: #202124;
+    --text-gray: #5f6368;
+    --border-light: #dadce0;
+    --main-bg: #e0f2f7;
+    --card-bg: white;
+    --card-shadow: 0 4px 6px rgba(60,64,67,0.1), 0 1px 3px rgba(60,64,67,0.08);
 }
-
 body {
-  font-family: 'Noto Sans KR', sans-serif;
-  margin: 0;
-  background-color: #f4f6f9;
-  color: var(--text-dark);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-bg); 
+    line-height: 1.6;
 }
-
-nav {
-  background-color: white;
-  border-bottom: 1px solid var(--border-light);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 100;
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+.top-nav { background-color: white; border-bottom: 1px solid var(--border-light); padding: 10px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.top-nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.top-nav .logo { font-size: 1.5em; font-weight: 700; color: var(--text-dark); }
+.top-nav-right { display: flex; gap: 20px; align-items: center; }
+.top-nav-link { color: var(--text-gray); font-weight: 500; transition: color 0.2s; font-size: 0.95em; }
+.top-nav-link:hover { color: var(--primary-blue); }
+.top-nav-button { background-color: var(--primary-blue); color: white; padding: 8px 15px; border-radius: 5px; font-weight: 500; transition: background-color 0.2s; font-size: 0.9em; }
+.top-nav-button:hover { background-color: #303f9f; }
+.top-nav-icon { font-size: 1.2em; color: var(--text-gray); cursor: pointer; transition: color 0.2s; }
+.top-nav-icon:hover { color: var(--primary-blue); }
+.top-nav-divider { height: 20px; width: 1px; background-color: var(--border-light); margin: 0 5px; }
+.hero-banner {
+    background-color: #3f51b5; color: white; padding: 50px 0; margin-bottom: 40px; border-radius: 8px;
+    position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-image: url('images/hero-banner.png'); background-size: cover; background-position: center; height: 250px; 
 }
-
-nav .logo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--text-dark);
+.hero-banner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); border-radius: 8px; }
+.hero-banner-content { position: relative; z-index: 1; max-width: 800px; margin-left: 40px; text-align: left; }
+.hero-banner-content h2 { font-size: 2.2em; font-weight: 700; margin: 0 0 10px 0; }
+.hero-banner-content p { font-size: 1em; margin-bottom: 20px; }
+.hero-banner-content .banner-button { display: inline-block; background-color: white; color: var(--primary-blue); padding: 10px 20px; border-radius: 5px; font-weight: 500; }
+.section-title { font-size: 1.8em; font-weight: 700; color: var(--text-dark); margin-bottom: 25px; padding-top: 10px; text-align: center; }
+.season-panels { display: grid; grid-template-columns: 1fr; gap: 25px; margin-bottom: 40px; }
+@media (min-width: 768px) { .season-panels { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .season-panels { gap: 40px; } }
+.season-panel {
+    background-color: var(--card-bg); border-radius: 10px; box-shadow: var(--card-shadow);
+    overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-light);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; position: relative;
 }
-
-nav .btn-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-button, a.button {
-  background-color: var(--primary-blue);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 6px 12px;
-  font-weight: 500;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.2s;
-  text-decoration: none;
-}
-
-button:hover, a.button:hover { background-color: #303f9f; }
-
-#viewer-container {
-  flex: 1;
-  height: calc(100vh - 55px);
-  overflow: hidden;
-  background-color: #fff;
-  position: relative;
-}
-
-#reader {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-#status {
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--text-gray);
-  padding: 6px;
-  border-top: 1px solid #ddd;
-  background-color: #fafafa;
-}
-
-.error-message {
-  text-align: center;
-  color: #d32f2f;
-  padding: 40px;
-  font-size: 1.1rem;
-}
-
-/* 좌/우 사이드 버튼 */
-.side-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 12px 20px;
-  font-size: 1rem;
-  background: rgba(63,81,181,0.8);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.2s;
-  z-index: 50;
-}
-
-#sidePrev { left: 10px; }
-#sideNext { right: 10px; }
-.side-button:hover { background: rgba(48,63,159,0.9); }
+.season-panel:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+.season-panel-image { width: 100%; height: 350px; background-size: cover; background-position: center; border-bottom: 1px solid var(--border-light); position: relative; }
+.season-panel-image::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.3); transition: background-color 0.2s; }
+.season-panel:hover .season-panel-image::before { background-color: rgba(0,0,0,0.5); }
+.season-panel-content { padding: 20px 25px 25px; flex-grow: 1; text-align: center; position: relative; z-index: 2; color: var(--text-dark); }
+.season-panel-content p { font-size: 1em; color: var(--text-gray); margin-bottom: 20px; }
+.panel-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.panel-button { display: block; width: 100%; padding: 12px 15px; border-radius: 5px; font-weight: 500; transition: background-color 0.2s, opacity 0.2s; text-align: center; }
+.read-button { background-color: var(--primary-blue); color: white; border: 1px solid var(--primary-blue); }
+.read-button:hover { background-color: #303f9f; }
+.audio-button { background-color: #FF5722; color: white; border: 1px solid #FF5722; }
+.audio-button:hover { background-color: #E64A19; }
+.footer-actions { background-color: white; border-top: 1px solid var(--border-light); padding: 30px 0; text-align: center; margin-top: 40px; }
+.footer-actions .button { display: inline-flex; align-items: center; padding: 12px 25px; border-radius: 6px; font-weight: 500; cursor: pointer; text-align: center; box-shadow: 0 1px 3px rgba(60,64,67,0.1); margin: 0 5px; }
+.footer-actions .primary-button { background-color: var(--primary-blue); color: white; }
+.footer-actions .secondary-button { background-color: white; color: var(--primary-blue); border: 1px solid var(--border-light); }
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); padding-top: 60px; }
+.modal-content { background-color: #fefefe; margin: 5% auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 400px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; text-align: left; }
+.close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; position: absolute; top: 10px; right: 20px; cursor: pointer; }
 </style>
 </head>
-
 <body>
-<nav>
-  <div class="logo">
-    <a href="index.html" style="text-decoration:none; color:inherit;">
-      📘 메일하루
-    </a>
-  </div>
-  <div class="btn-group">
-    <button id="btnPrev"><i class="fas fa-arrow-left"></i></button>
-    <button id="btnNext"><i class="fas fa-arrow-right"></i></button>
-    <button id="btnFontUp">A+</button>
-    <button id="btnFontDown">A-</button>
-    <a href="index.html" class="button"><i class="fas fa-home"></i> 홈으로</a>
-  </div>
+<nav class="top-nav">
+    <div class="container top-nav-inner">
+        <a href="#" class="logo">메일하루</a>
+        <div class="top-nav-right">
+            <a href="https://naver.me/x6x6E7L2" target="_blank" class="top-nav-icon"><i class="fas fa-search"></i></a>
+            <div class="top-nav-divider"></div>
+            <a href="https://naver.me/x6x6E7L2" target="_blank" class="top-nav-link">구독신청</a>
+            <a href="https://naver.me/531Nnlro" target="_blank" class="top-nav-button"><i class="fas fa-edit"></i> 전자책 투고하기</a>
+        </div>
+    </div>
 </nav>
 
-<div id="viewer-container">
-  <div id="reader"></div>
+<div class="container">
+    <div class="hero-banner">
+        <div class="hero-banner-content">
+            <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
+            <p>부산 시민의 일상 생각과 이야기를 담아 매달 발행되는 참여형 전자책 메일링 서비스.</p>
+            <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a> 
+        </div>
+    </div>
 
-  <!-- 좌/우 사이드 버튼 -->
-  <button id="sidePrev" class="side-button"><i class="fas fa-arrow-left"></i> 이전</button>
-  <button id="sideNext" class="side-button">다음 <i class="fas fa-arrow-right"></i></button>
+    <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
+    <div class="season-panels" id="seasonPanels"></div>
 </div>
 
-<div id="status">로딩 중...</div>
+<div class="footer-actions">
+    <div class="container">
+        <a href="https://naver.me/x6x6E7L2" target="_blank" class="button primary-button"><i class="fas fa-envelope"></i>메일링 서비스 구독</a>
+        <a href="#" id="downloadBtn" class="button secondary-button"><i class="fas fa-download"></i>이 페이지 다운로드</a>
+    </div>
+</div>
 
-<script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
 <script>
-const params = new URLSearchParams(window.location.search);
-const epubPath = params.get("epub");
-const bookTitle = params.get("title") || "전자책";
+const pathParts = window.location.pathname.split('/');
+const repoName = pathParts[1] || "";
+const BASE_URL = repoName ? `${window.location.origin}/${repoName}` : window.location.origin;
 
-document.title = `${bookTitle} | 메일하루 전자책`;
+const IMG_FOLDER = `${BASE_URL}/images/`;
+const EPUB_FOLDER = `${BASE_URL}/epubs/`;
 
-if(!epubPath){
-  document.body.innerHTML = '<div class="error-message">❌ ePub 경로가 지정되지 않았습니다.<br>index.html에서 올바른 링크로 접근해주세요.</div>';
-  throw new Error("No epub path");
+const seasonPanelsElement = document.getElementById('seasonPanels');
+
+const seasonData = [
+    { theme: "봄", title: "새로운 시작", desc: "생동감 넘치는 봄의 이야기들", imageUrl: `${IMG_FOLDER}spring.png`, epubFile: `${EPUB_FOLDER}book_spring.epub` },
+    { theme: "여름", title: "뜨거운 열정", desc: "시원한 바다와 휴가의 추억", imageUrl: `${IMG_FOLDER}summer.png`, epubFile: `${EPUB_FOLDER}book_summer.epub` },
+    { theme: "가을", title: "사색의 계절", desc: "깊어가는 가을날의 감성 기록", imageUrl: `${IMG_FOLDER}autumn.png`, epubFile: `${EPUB_FOLDER}book_autumn.epub` },
+    { theme: "겨울", title: "따뜻한 위로", desc: "하얀 설경 속 포근한 이야기", imageUrl: `${IMG_FOLDER}winter.png`, epubFile: `${EPUB_FOLDER}book_winter.epub` }
+];
+
+function createSeasonPanel(season) {
+    const viewerLink = `viewer.html?epub=${encodeURIComponent(season.epubFile)}&title=${encodeURIComponent(season.title)}`;
+    return `
+        <div class="season-panel" data-theme="${season.theme}">
+            <a href="${viewerLink}" target="_blank">
+                <div class="season-panel-image" style="background-image: url('${season.imageUrl}');"></div>
+            </a>
+            <div class="season-panel-content">
+                <p>${season.desc}</p>
+                <div class="panel-actions">
+                    <a href="${viewerLink}" target="_blank" class="panel-button read-button">
+                        <i class="fas fa-book-open"></i> 전자책 열람하기
+                    </a>
+                    <button class="panel-button audio-button" onclick="alert('🎧 오디오북 준비 중입니다!')">
+                        <i class="fas fa-headphones"></i> 오디오북으로 듣기
+                    </button>
+                </div>
+            </div>
+        </div>`;
 }
 
-const status = document.getElementById("status");
-const reader = document.getElementById("reader");
-
-try {
-  const book = ePub(epubPath); // epubs 폴더 기준 상대경로
-  const rendition = book.renderTo(reader, { width:"100%", height:"100%", spread:"auto" });
-  let fontSize = 100;
-
-  rendition.themes.default({
-    "body": {
-      "font-family":"'Noto Sans KR',sans-serif",
-      "line-height":"1.7",
-      "padding":"24px"
-    }
-  });
-
-  rendition.display();
-
-  book.ready.then(()=> status.textContent="✅ 로드 완료")
-           .catch(err=> { console.error(err); status.textContent="⚠️ 로드 중 오류 발생"; });
-
-  // 상단 버튼
-  document.getElementById("btnPrev").onclick = () => rendition.prev();
-  document.getElementById("btnNext").onclick = () => rendition.next();
-  document.getElementById("btnFontUp").onclick = () => { fontSize=Math.min(fontSize+10,200); rendition.themes.fontSize(fontSize+"%"); };
-  document.getElementById("btnFontDown").onclick = () => { fontSize=Math.max(fontSize-10,60); rendition.themes.fontSize(fontSize+"%"); };
-
-  // 좌/우 사이드 버튼
-  document.getElementById("sidePrev").onclick = () => rendition.prev();
-  document.getElementById("sideNext").onclick = () => rendition.next();
-
-  // 키보드 좌우 이동
-  document.addEventListener("keydown", e=>{
-    if(e.key==="ArrowRight") rendition.next();
-    if(e.key==="ArrowLeft") rendition.prev();
-  });
-
-} catch(err) {
-  console.error(err);
-  document.body.innerHTML = `<div class="error-message">❌ 전자책을 열 수 없습니다.<br>${err.message}</div>`;
+function renderSeasonPanels() {
+    seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 }
+
+document.addEventListener('DOMContentLoaded', renderSeasonPanels);
 </script>
 </body>
 </html>
+
 
