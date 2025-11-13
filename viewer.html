@@ -121,9 +121,6 @@
 
   <div id="status">로딩 중...</div>
 
-  <!-- ✅ JSZip 먼저 로드 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
   <!-- ✅ ePub.js -->
   <script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
 
@@ -142,25 +139,17 @@
       throw new Error("No epub path");
     }
 
-    // ✅ 저장소 자동 인식 (GitHub Pages 호환)
-    const repoBase = window.location.pathname.split("/")[1];
-    const absoluteURL = `${window.location.origin}/${repoBase}/${epubPath}`;
+    // GitHub Pages 호환 절대 경로
+    const repoName = window.location.pathname.split("/")[1];
+    const absoluteURL = repoName ? `${window.location.origin}/${repoName}/${epubPath}` : `${window.location.origin}/${epubPath}`;
 
-    console.log("📖 Fetching:", absoluteURL);
+    console.log("📖 EPUB URL:", absoluteURL);
 
-    async function startViewer() {
+    function startViewer() {
       try {
         status.textContent = "📦 전자책 파일을 불러오는 중...";
 
-        const response = await fetch(absoluteURL);
-        if (!response.ok) throw new Error("ePub 파일을 불러올 수 없습니다.");
-
-        const blob = await response.blob();
-        const arrayBuffer = await blob.arrayBuffer();
-
-        status.textContent = "📖 로드 중...";
-
-        const book = ePub(arrayBuffer);
+        const book = ePub(absoluteURL);
         const rendition = book.renderTo(reader, {
           width: "100%",
           height: "100%",
@@ -186,7 +175,7 @@
           status.textContent = "⚠️ 전자책 로드 중 오류가 발생했습니다.";
         });
 
-        // 페이지 이동 및 폰트 조절 기능
+        // 페이지 이동 / 폰트 조절
         document.getElementById("btnPrev").onclick = () => rendition.prev();
         document.getElementById("btnNext").onclick = () => rendition.next();
         document.getElementById("btnFontUp").onclick = () => {
@@ -203,6 +192,7 @@
           if (e.key === "ArrowRight") rendition.next();
           if (e.key === "ArrowLeft") rendition.prev();
         });
+
       } catch (err) {
         console.error(err);
         document.body.innerHTML = `<div class="error-message">❌ 전자책을 열 수 없습니다.<br><br>${err.message}</div>`;
