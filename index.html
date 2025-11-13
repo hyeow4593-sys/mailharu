@@ -1,110 +1,58 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메일하루 | 시민 참여 전자책 도서관</title>
+<title>MailHaru | eBook Library</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-  :root {
-    --primary-blue: #3f51b5;
-    --text-dark: #202124;
-    --text-gray: #5f6368;
-    --border-light: #dadce0;
-    --card-bg: #fff;
-    --card-shadow: 0 4px 6px rgba(60,64,67,0.1),0 1px 3px rgba(60,64,67,0.08);
-  }
-  body{font-family:'Noto Sans KR',sans-serif;margin:0;padding:0;background-color:#e0f2f7;line-height:1.6;}
-  a{text-decoration:none;color:inherit;}
-  .container{max-width:1200px;margin:0 auto;padding:0 20px;}
-  .top-nav{background:white;border-bottom:1px solid var(--border-light);padding:10px 0;box-shadow:0 1px 2px rgba(0,0,0,0.05);}
-  .top-nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%;}
-  .top-nav .logo{font-size:1.5em;font-weight:700;color:var(--text-dark);}
-  .top-nav-right{display:flex;gap:20px;align-items:center;}
-  .top-nav-link{color:var(--text-gray);font-weight:500;font-size:0.95em;}
-  .top-nav-button{background:var(--primary-blue);color:white;padding:8px 15px;border-radius:5px;font-weight:500;font-size:0.9em;}
-  .top-nav-divider{height:20px;width:1px;background-color:var(--border-light);margin:0 5px;}
-  .hero-banner{background-color:#3f51b5;color:white;padding:50px 0;margin-bottom:40px;border-radius:8px;position:relative;box-shadow:0 4px 10px rgba(0,0,0,0.1);background-image:url('images/banner-library-reading.jpg');background-size:cover;background-position:center;height:250px;}
-  .hero-banner::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.5);border-radius:8px;}
-  .hero-banner-content{position:relative;z-index:1;max-width:800px;margin-left:40px;text-align:left;}
-  .hero-banner-content h2{font-size:2.2em;font-weight:700;margin:0 0 10px 0;}
-  .hero-banner-content p{font-size:1em;margin-bottom:20px;}
-  .banner-button{display:inline-block;background:white;color:var(--primary-blue);padding:10px 20px;border-radius:5px;font-weight:500;}
-  .section-title{font-size:1.8em;font-weight:700;color:var(--text-dark);margin-bottom:25px;padding-top:10px;text-align:center;}
-  .season-panels{display:grid;grid-template-columns:1fr;gap:25px;margin-bottom:40px;}
-  @media(min-width:768px){.season-panels{grid-template-columns:1fr 1fr;}}
-  .season-panel{background:var(--card-bg);border-radius:10px;box-shadow:var(--card-shadow);overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--border-light);transition:transform 0.2s ease,box-shadow 0.2s ease;position:relative;}
-  .season-panel:hover{transform:translateY(-5px);box-shadow:0 8px 15px rgba(0,0,0,0.15);}
-  .season-panel-image{width:100%;height:350px;background-size:cover;background-position:center;border-bottom:1px solid var(--border-light);position:relative;}
-  .season-panel-image::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,0.3);transition:background-color 0.2s;}
-  .season-panel:hover .season-panel-image::before{background-color:rgba(0,0,0,0.5);}
-  .season-panel-content{padding:20px 25px 25px;flex-grow:1;text-align:center;position:relative;z-index:2;color:var(--text-dark);}
-  .panel-actions{display:flex;flex-direction:column;gap:10px;margin-top:15px;}
-  .panel-button{display:flex;align-items:center;justify-content:center;width:100%;height:48px;border-radius:5px;font-weight:500;font-size:0.95em;gap:8px;text-decoration:none;transition:background 0.2s;}
-  .read-button{background:var(--primary-blue);color:white;border:1px solid var(--primary-blue);}
-  .read-button:hover{background:#303f9f;}
-  .audio-button{background:#FF5722;color:white;border:1px solid #FF5722;}
-  .audio-button:hover{background:#E64A19;}
+  body { font-family:'Noto Sans KR',sans-serif; margin:0; background:#e0f2f7; }
+  .container { max-width:1200px; margin:0 auto; padding:20px; }
+  h2 { text-align:center; margin-bottom:25px; }
+  .season-panels { display:grid; grid-template-columns:1fr; gap:25px; }
+  @media(min-width:768px){ .season-panels{grid-template-columns:1fr 1fr;} }
+  .season-panel { background:white; border-radius:10px; overflow:hidden; text-align:center; box-shadow:0 4px 6px rgba(60,64,67,0.1); }
+  .season-panel img { width:100%; height:250px; object-fit:cover; }
+  .season-panel-content { padding:20px; }
+  .panel-button { display:inline-block; padding:10px 15px; margin:5px; border:none; border-radius:5px; background:#3f51b5; color:white; text-decoration:none; cursor:pointer; }
+  .panel-button:hover { background:#303f9f; }
 </style>
 </head>
 <body>
-<nav class="top-nav">
-  <div class="container top-nav-inner">
-    <a href="#" class="logo">메일하루</a>
-    <div class="top-nav-right">
-      <a href="#" class="top-nav-link">구독신청</a>
-      <a href="#" class="top-nav-button"><i class="fas fa-edit"></i> 전자책 투고하기</a>
-    </div>
-  </div>
-</nav>
-
 <div class="container">
-  <div class="hero-banner">
-    <div class="hero-banner-content">
-      <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
-      <p>부산 시민의 일상과 생각을 담아 매달 발행되는 참여형 전자책 메일링 서비스.</p>
-      <a href="#" class="banner-button">✉️ 구독 서비스 신청하기</a>
-    </div>
-  </div>
-
-  <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
-  <div class="season-panels" id="seasonPanels"></div>
-</div>
-
-<script>
-const IMG_FOLDER = 'images/';
-const EPUB_FOLDER = 'epubs/';
-const seasonData=[
-  {theme:"봄",title:"새로운 시작",desc:"생동감 넘치는 봄의 이야기들",imageUrl:IMG_FOLDER+"spring.png",epubFile:EPUB_FOLDER+"book_spring.epub"},
-  {theme:"여름",title:"뜨거운 열정",desc:"시원한 바다와 휴가의 추억",imageUrl:IMG_FOLDER+"summer.png",epubFile:EPUB_FOLDER+"book_summer.epub"},
-  {theme:"가을",title:"사색의 계절",desc:"깊어가는 가을날의 감성 기록",imageUrl:IMG_FOLDER+"autumn.png",epubFile:EPUB_FOLDER+"book_autumn.epub"},
-  {theme:"겨울",title:"따뜻한 위로",desc:"하얀 설경 속 포근한 이야기",imageUrl:IMG_FOLDER+"winter.png",epubFile:EPUB_FOLDER+"book_winter.epub"}
-];
-
-function createSeasonPanel(season){
-  const viewerLink=`viewer.html?epub=${encodeURIComponent(season.epubFile)}&title=${encodeURIComponent(season.title)}`;
-  return `
-  <div class="season-panel">
-    <a href="${viewerLink}" target="_blank">
-      <div class="season-panel-image" style="background-image:url('${season.imageUrl}');"></div>
-    </a>
-    <div class="season-panel-content">
-      <p>${season.desc}</p>
-      <div class="panel-actions">
-        <a href="${viewerLink}" target="_blank" class="panel-button read-button"><i class="fas fa-book-open"></i> 전자책 열람하기</a>
-        <button class="panel-button audio-button" onclick="alert('🎧 오디오북 준비 중입니다!')"><i class="fas fa-headphones"></i> 오디오북 듣기</button>
+  <h2>Online Reading Room: Four Seasons</h2>
+  <div class="season-panels">
+    <div class="season-panel">
+      <img src="images/spring.png" alt="Spring">
+      <div class="season-panel-content">
+        <p>Fresh and lively stories of Spring</p>
+        <a class="panel-button" href="viewer.html?epub=epubs/book_spring.epub&title=Spring" target="_blank">Read eBook</a>
       </div>
     </div>
-  </div>`;
-}
-
-function renderSeasonPanels(){
-  document.getElementById('seasonPanels').innerHTML=seasonData.map(createSeasonPanel).join('');
-}
-
-document.addEventListener('DOMContentLoaded',renderSeasonPanels);
-</script>
+    <div class="season-panel">
+      <img src="images/summer.png" alt="Summer">
+      <div class="season-panel-content">
+        <p>Hot and sunny memories of Summer</p>
+        <a class="panel-button" href="viewer.html?epub=epubs/book_summer.epub&title=Summer" target="_blank">Read eBook</a>
+      </div>
+    </div>
+    <div class="season-panel">
+      <img src="images/autumn.png" alt="Autumn">
+      <div class="season-panel-content">
+        <p>Deep reflections in Autumn</p>
+        <a class="panel-button" href="viewer.html?epub=epubs/book_autumn.epub&title=Autumn" target="_blank">Read eBook</a>
+      </div>
+    </div>
+    <div class="season-panel">
+      <img src="images/winter.png" alt="Winter">
+      <div class="season-panel-content">
+        <p>Warm stories in Winter snow</p>
+        <a class="panel-button" href="viewer.html?epub=epubs/book_winter.epub&title=Winter" target="_blank">Read eBook</a>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 
