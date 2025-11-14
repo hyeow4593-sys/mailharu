@@ -89,7 +89,10 @@ a { text-decoration:none; color:inherit; }
     cursor: pointer;
 }
 #volumeControl {
-    width: 100px;
+    width: 80px;
+}
+#progressControl {
+    width: 150px;
 }
 
 /* 시즌 카드 */
@@ -141,14 +144,15 @@ a { text-decoration:none; color:inherit; }
 
   <!-- 영상 배너 -->
   <div class="video-banner">
-    <video id="mainVideo" autoplay muted loop playsinline>
+    <video id="mainVideo" playsinline>
       <source src="video/banner.mp4" type="video/mp4">
       지원되지 않는 브라우저입니다.
     </video>
 
     <!-- 커스텀 컨트롤 -->
     <div id="videoControls">
-      <button id="playPauseBtn"><i class="fas fa-pause"></i></button>
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <input type="range" id="progressControl" min="0" max="100" value="0" step="0.1" title="Progress">
       <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.5" title="Volume">
       <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
     </div>
@@ -169,7 +173,13 @@ const video = document.getElementById("mainVideo");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const volumeControl = document.getElementById("volumeControl");
 const fullscreenBtn = document.getElementById("fullscreenBtn");
+const progressControl = document.getElementById("progressControl");
 const playIcon = playPauseBtn.querySelector("i");
+
+// 영상 자동재생 제거
+video.pause();
+playIcon.classList.remove("fa-pause");
+playIcon.classList.add("fa-play");
 
 // 재생/일시정지
 playPauseBtn.addEventListener("click", () => {
@@ -196,6 +206,16 @@ fullscreenBtn.addEventListener("click", () => {
     } else {
         document.exitFullscreen();
     }
+});
+
+// 영상 슬라이더 업데이트
+video.addEventListener("timeupdate", () => {
+    if(video.duration) progressControl.value = (video.currentTime / video.duration) * 100;
+});
+
+// 슬라이더로 영상 이동
+progressControl.addEventListener("input", () => {
+    if(video.duration) video.currentTime = (progressControl.value / 100) * video.duration;
 });
 
 /* 시즌 카드 생성 */
@@ -234,6 +254,7 @@ seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 
 </body>
 </html>
+
 
 
 
