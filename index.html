@@ -31,6 +31,7 @@ a { text-decoration:none; color:inherit; }
 .top-nav-button { background:var(--primary-blue); color:white; padding:8px 15px; border-radius:5px; font-size:0.9em; }
 .top-nav-button:hover { background:#303f9f; }
 
+/* 상단 이미지 배너 */
 .hero-banner { 
     background-image:url('images/spring.png'); 
     background-size:cover; 
@@ -42,25 +43,50 @@ a { text-decoration:none; color:inherit; }
     margin-bottom:40px;
     margin-top:25px;
 }
-
 .hero-banner::before { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.5); border-radius:8px; }
 .hero-banner-content { position:relative; z-index:1; max-width:800px; margin-left:40px; color:white; }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
 .banner-button { background:white; color:var(--primary-blue); padding:10px 20px; border-radius:5px; font-weight:500; }
 
-/* 🔥 새로 추가: MP4 영상 배너 스타일 */
+/* 🔥 시그니처 MP4 영상 배너 */
 .video-banner {
     width: 100%;
-    margin: -10px auto 40px auto;  /* hero-banner 바로 아래 붙게 */
+    height: 55vh;
+    margin: 20px 0 50px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
-
 .video-banner video {
     width: 100%;
-    height: auto;
-    border-radius: 10px;
-    display: block;
-    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 🎮 재생/일시정지 버튼 */
+.video-control {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 55px;
+    height: 55px;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(5px);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.25s;
+}
+.video-control:hover {
+    background: rgba(0,0,0,0.75);
+}
+.video-control i {
+    font-size: 26px;
+    color: white;
 }
 
 .section-title { font-size:1.8em; font-weight:700; text-align:center; margin-bottom:25px; }
@@ -86,9 +112,9 @@ a { text-decoration:none; color:inherit; }
 
 .footer-actions { background:white; border-top:1px solid var(--border-light); padding:30px 0; text-align:center; margin-top:40px; }
 .footer-actions .button { display:inline-flex; align-items:center; padding:12px 25px; border-radius:6px; font-weight:500; cursor:pointer; box-shadow:0 1px 3px rgba(60,64,67,0.1); margin:0 5px; }
-
 </style>
 </head>
+
 <body>
 
 <nav class="top-nav">
@@ -101,6 +127,7 @@ a { text-decoration:none; color:inherit; }
 
 <div class="container">
 
+  <!-- 상단 이미지 배너 -->
   <div class="hero-banner">
     <div class="hero-banner-content">
       <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
@@ -109,12 +136,17 @@ a { text-decoration:none; color:inherit; }
     </div>
   </div>
 
-  <!-- 🔥 추가된 영상 배너 -->
+  <!-- 🔥 시그니처 영상 배너 -->
   <div class="video-banner">
-    <video autoplay muted loop playsinline>
+    <video id="mainVideo" autoplay muted loop playsinline>
       <source src="video/banner.mp4" type="video/mp4">
       지원되지 않는 브라우저입니다.
     </video>
+
+    <!-- 🎮 재생/일시정지 버튼 -->
+    <div class="video-control" id="videoToggle">
+      <i class="fas fa-pause"></i>
+    </div>
   </div>
 
   <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
@@ -127,6 +159,24 @@ a { text-decoration:none; color:inherit; }
 </div>
 
 <script>
+/* 🎮 영상 재생/일시정지 기능 */
+const video = document.getElementById("mainVideo");
+const toggleBtn = document.getElementById("videoToggle");
+const icon = toggleBtn.querySelector("i");
+
+toggleBtn.addEventListener("click", () => {
+    if (video.paused) {
+        video.play();
+        icon.classList.remove("fa-play");
+        icon.classList.add("fa-pause");
+    } else {
+        video.pause();
+        icon.classList.remove("fa-pause");
+        icon.classList.add("fa-play");
+    }
+});
+
+/* 🔥 시즌 카드 생성 */
 const seasonPanelsElement = document.getElementById('seasonPanels');
 
 const seasonData = [
