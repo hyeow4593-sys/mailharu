@@ -40,8 +40,6 @@ a { text-decoration:none; color:inherit; }
     position:relative; 
     box-shadow:0 4px 10px rgba(0,0,0,0.1); 
     margin-bottom:40px;
-    
-    /* ★ 추가 → 배너 위 여백 */
     margin-top:25px;
 }
 
@@ -50,6 +48,20 @@ a { text-decoration:none; color:inherit; }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
 .banner-button { background:white; color:var(--primary-blue); padding:10px 20px; border-radius:5px; font-weight:500; }
+
+/* 🔥 새로 추가: MP4 영상 배너 스타일 */
+.video-banner {
+    width: 100%;
+    margin: -10px auto 40px auto;  /* hero-banner 바로 아래 붙게 */
+}
+
+.video-banner video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
 
 .section-title { font-size:1.8em; font-weight:700; text-align:center; margin-bottom:25px; }
 
@@ -88,6 +100,7 @@ a { text-decoration:none; color:inherit; }
 </nav>
 
 <div class="container">
+
   <div class="hero-banner">
     <div class="hero-banner-content">
       <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
@@ -96,8 +109,17 @@ a { text-decoration:none; color:inherit; }
     </div>
   </div>
 
+  <!-- 🔥 추가된 영상 배너 -->
+  <div class="video-banner">
+    <video autoplay muted loop playsinline>
+      <source src="video/banner.mp4" type="video/mp4">
+      지원되지 않는 브라우저입니다.
+    </video>
+  </div>
+
   <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
   <div class="season-panels" id="seasonPanels"></div>
+
 </div>
 
 <div class="footer-actions">
@@ -140,6 +162,7 @@ seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 
 </body>
 </html>
+
 
 
 
