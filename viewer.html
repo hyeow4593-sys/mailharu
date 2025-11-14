@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>메일하루 전자책 열람실</title>
+<title>매일하루 전자책 열람실</title>
 
 <!-- 폰트 / 아이콘 -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -115,7 +115,7 @@ const params = new URLSearchParams(window.location.search);
 const epubFile = params.get("epub"); // 파일명만
 const bookTitle = params.get("title") || "전자책";
 
-document.title = `${bookTitle} | 메일하루 전자책`;
+document.title = `${bookTitle} | 매일하루 전자책`;
 
 const status = document.getElementById("status");
 const reader = document.getElementById("reader");
