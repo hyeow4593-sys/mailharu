@@ -112,7 +112,7 @@ button:hover, a.button:hover { background-color:#303f9f; }
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const epubFile = params.get("epub"); // 파일명만
+const epubFile = params.get("epub"); // ?epub=파일명.epub
 const bookTitle = params.get("title") || "전자책";
 
 document.title = `${bookTitle} | 매일하루 전자책`;
