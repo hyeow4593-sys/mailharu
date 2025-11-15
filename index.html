@@ -80,11 +80,16 @@ a { text-decoration:none; color:inherit; }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
 .banner-button {
+    /* 위치 변경: 왼쪽 하단으로 절대 배치 */
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
     background:white;
     color:var(--primary-blue);
     padding:10px 20px;
     border-radius:5px;
-    font-weight:500;
+    font-weight:600;
+    z-index:2;
 }
 
 /* 영상 배너 */
@@ -328,8 +333,10 @@ a { text-decoration:none; color:inherit; }
     <div class="hero-banner-content">
       <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
       <p>부산 시민의 일상 생각과 이야기를 담아 매달 발행되는 참여형 전자책 메일링 서비스.</p>
-      <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
+      <!-- (텍스트 영역은 그대로 두었고 버튼은 아래에 절대위치로 배치됨) -->
     </div>
+    <!-- 왼쪽 하단 구독 버튼 (절대 위치) -->
+    <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
   </div>
 
   <!-- 영상 배너 -->
@@ -339,7 +346,7 @@ a { text-decoration:none; color:inherit; }
       지원되지 않는 브라우저입니다.
     </video>
 
-    <!-- 📘 전자책으로 보기 버튼 (수정됨) -->
+    <!-- 📘 전자책으로 보기 버튼 (연결: banner.epub / 반려동물) -->
     <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
       📖 전자책으로 보기
     </a>
@@ -514,6 +521,7 @@ audioCloseBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
 
 
 
