@@ -10,307 +10,315 @@
 
 <style>
 :root {
-    --primary-blue: #3f51b5;
-    --text-dark: #202124;
-    --text-gray: #5f6368;
-    --border-light: #dadce0;
-    --main-bg: #e0f2f7;
-    --card-bg: white;
-    --card-shadow: 0 4px 6px rgba(60,64,67,0.1),0 1px 3px rgba(60,64,67,0.08);
+    --primary-blue: #3f51b5;
+    --text-dark: #202124;
+    --text-gray: #5f6368;
+    --border-light: #dadce0;
+    --main-bg: #e0f2f7;
+    --card-bg: white;
+    --card-shadow: 0 4px 6px rgba(60,64,67,0.1),0 1px 3px rgba(60,64,67,0.08);
 }
 
 body {
-    margin:0;
-    font-family:'Noto Sans KR',sans-serif;
-    background:var(--main-bg);
-    line-height:1.6;
+    margin:0;
+    font-family:'Noto Sans KR',sans-serif;
+    background:var(--main-bg);
+    line-height:1.6;
 }
 a { text-decoration:none; color:inherit; }
 .container { max-width:1200px; margin:0 auto; padding:0 20px; }
 
 /* 상단 NAV */
 .top-nav {
-    background:white;
-    border-bottom:1px solid var(--border-light);
-    padding:10px 0;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    box-shadow:0 1px 2px rgba(0,0,0,0.05);
+    background:white;
+    border-bottom:1px solid var(--border-light);
+    padding:10px 0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 1px 2px rgba(0,0,0,0.05);
 }
 .logo { font-size:1.5em; font-weight:700; color:var(--text-dark); }
 .top-nav-right { display:flex; gap:20px; align-items:center; }
 .top-nav-link { color:var(--text-gray); font-weight:500; font-size:0.95em; }
 .top-nav-link:hover { color:var(--primary-blue); }
 .top-nav-button {
-    background:var(--primary-blue);
-    color:white;
-    padding:8px 15px;
-    border-radius:5px;
-    font-size:0.9em;
+    background:var(--primary-blue);
+    color:white;
+    padding:8px 15px;
+    border-radius:5px;
+    font-size:0.9em;
 }
 .top-nav-button:hover { background:#303f9f; }
 
 /* 상단 이미지 배너 */
 .hero-banner {
-    background-image:url('images/top-banner.png');
-    background-size:cover;
-    background-position:center;
-    height:250px;
-    border-radius:8px;
-    position:relative;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    margin-bottom:40px;
-    margin-top:25px;
+    background-image:url('images/top-banner.png');
+    background-size:cover;
+    background-position:center;
+    height:250px;
+    border-radius:8px;
+    position:relative;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom:40px;
+    margin-top:25px;
 }
 .hero-banner::before {
-    content:"";
-    position:absolute;
-    top:0; left:0; right:0; bottom:0;
-    background-color:rgba(0,0,0,0.5);
-    border-radius:8px;
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background-color:rgba(0,0,0,0.5);
+    border-radius:8px;
 }
 .hero-banner-content {
-    position:relative;
-    z-index:1;
-    max-width:800px;
-    margin-left:40px;
-    color:white;
+    position:relative;
+    z-index:1;
+    max-width:800px;
+    margin-left:40px;
+    color:white;
 }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
 .banner-button {
-    position: absolute;
-    left: 30px;
-    bottom: 30px;
-    background:white;
-    color:var(--primary-blue);
-    padding:10px 20px;
-    border-radius:5px;
-    font-weight:600;
-    z-index:2;
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
+    background:white;
+    color:var(--primary-blue);
+    padding:10px 20px;
+    border-radius:5px;
+    font-weight:600;
+    z-index:2;
 }
 
-/* 영상 배너 */
+/* 영상 배너 (수정된 부분) */
 .video-banner {
-    width: 100%;
-    height: 55vh;
-    margin: 20px 0 50px 0;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 100%;
+    /* height: 55vh; <- 제거됨 */
+    margin: 20px 0 50px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background-color: black;
+    
+    /* 👇 16:9 비율 유지 (height: 9 / width: 16 = 56.25%) */
+    padding-bottom: 56.25%; 
+    height: 0; /* 패딩을 높이로 사용하기 위해 0으로 설정 */
 }
 .video-banner video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    position: absolute; /* 부모가 height: 0이므로 절대 위치 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 원본 비율 유지, 잘리지 않음 */
 }
 
 /* 📘 전자책 버튼 */
 .ebook-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: white;
-    color: var(--primary-blue);
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 16px;
-    z-index: 10;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: 0.2s;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: white;
+    color: var(--primary-blue);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.2s;
 }
 .ebook-button:hover { background: #e8e8ff; }
 
 /* 비디오 커스텀 컨트롤 */
 #videoControls {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    background: rgba(0,0,0,0.55);
-    padding: 10px;
-    border-radius: 50px;
-    backdrop-filter: blur(5px);
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: rgba(0,0,0,0.55);
+    padding: 10px;
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
 }
 #videoControls button {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
 #volumeIcon {
-    color: white;
-    font-size: 18px;
-    margin-right: 5px;
+    color: white;
+    font-size: 18px;
+    margin-right: 5px;
 }
 #volumeControl { width: 80px; }
 #progressControl { width: 150px; }
 
 /* 시즌 카드 */
 .section-title {
-    font-size:1.8em;
-    font-weight:700;
-    text-align:center;
-    margin-bottom:25px;
+    font-size:1.8em;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:25px;
 }
 .season-panels {
-    display:grid;
-    grid-template-columns:1fr;
-    gap:25px;
-    margin-bottom:40px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:25px;
+    margin-bottom:40px;
 }
 @media(min-width:768px){
-    .season-panels { grid-template-columns:1fr 1fr; }
+    .season-panels { grid-template-columns:1fr 1fr; }
 }
 @media(min-width:1024px){
-    .season-panels { gap:40px; }
+    .season-panels { gap:40px; }
 }
 
 .season-panel {
-    background:var(--card-bg);
-    border-radius:10px;
-    box-shadow:var(--card-shadow);
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-    border:1px solid var(--border-light);
-    transition: transform 0.2s, box-shadow 0.2s;
-    position:relative;
+    background:var(--card-bg);
+    border-radius:10px;
+    box-shadow:var(--card-shadow);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    border:1px solid var(--border-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position:relative;
 }
 .season-panel:hover {
-    transform:translateY(-5px);
-    box-shadow:0 8px 15px rgba(0,0,0,0.15);
+    transform:translateY(-5px);
+    box-shadow:0 8px 15px rgba(0,0,0,0.15);
 }
 .season-panel-image {
-    width:100%;
-    height:350px;
-    background-size:cover;
-    background-position:center;
-    border-bottom:1px solid var(--border-light);
-    position:relative;
+    width:100%;
+    height:350px;
+    background-size:cover;
+    background-position:center;
+    border-bottom:1px solid var(--border-light);
+    position:relative;
 }
 .season-panel-image::before {
-    content:"";
-    position:absolute;
-    top:0; left:0; right:0; bottom:0;
-    background-color:rgba(0,0,0,0.3);
-    transition:0.2s;
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background-color:rgba(0,0,0,0.3);
+    transition:0.2s;
 }
 .season-panel:hover .season-panel-image::before {
-    background-color:rgba(0,0,0,0.5);
+    background-color:rgba(0,0,0,0.5);
 }
 .season-panel-content {
-    padding:20px 25px 25px;
-    flex-grow:1;
-    text-align:center;
-    position:relative;
-    z-index:2;
-    color:var(--text-dark);
+    padding:20px 25px 25px;
+    flex-grow:1;
+    text-align:center;
+    position:relative;
+    z-index:2;
+    color:var(--text-dark);
 }
 .season-panel-content p {
-    color:var(--text-gray);
-    margin-bottom:20px;
+    color:var(--text-gray);
+    margin-bottom:20px;
 }
 
 .panel-actions {
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
 .panel-button {
-    display:block;
-    width:100%;
-    padding:12px 15px;
-    font-size:1rem;
-    border-radius:5px;
-    font-weight:500;
-    text-align:center;
-    transition:0.2s;
-    box-sizing:border-box;
+    display:block;
+    width:100%;
+    padding:12px 15px;
+    font-size:1rem;
+    border-radius:5px;
+    font-weight:500;
+    text-align:center;
+    transition:0.2s;
+    box-sizing:border-box;
 }
 .read-button {
-    background:var(--primary-blue);
-    color:white;
-    border:1px solid var(--primary-blue);
+    background:var(--primary-blue);
+    color:white;
+    border:1px solid var(--primary-blue);
 }
 .read-button:hover { background:#303f9f; }
 .audio-button {
-    background:#FF5722;
-    color:white;
-    border:1px solid #FF5722;
+    background:#FF5722;
+    color:white;
+    border:1px solid #FF5722;
 }
 .audio-button:hover { background:#E64A19; }
 
 /* 푸터 */
 .footer-actions {
-    background:white;
-    border-top:1px solid var(--border-light);
-    padding:30px 0;
-    text-align:center;
-    margin-top:40px;
+    background:white;
+    border-top:1px solid var(--border-light);
+    padding:30px 0;
+    text-align:center;
+    margin-top:40px;
 }
 .footer-actions .button {
-    display:inline-flex;
-    align-items:center;
-    padding:12px 25px;
-    border-radius:6px;
-    font-weight:500;
-    cursor:pointer;
-    box-shadow:0 1px 3px rgba(60,64,67,0.1);
-    margin:0 5px;
+    display:inline-flex;
+    align-items:center;
+    padding:12px 25px;
+    border-radius:6px;
+    font-weight:500;
+    cursor:pointer;
+    box-shadow:0 1px 3px rgba(60,64,67,0.1);
+    margin:0 5px;
 }
 
 /* 오디오 팝업 */
 .audio-popup {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 320px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    padding: 20px;
-    display: none;
-    z-index: 9999;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 320px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    padding: 20px;
+    display: none;
+    z-index: 9999;
 }
 .audio-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 700;
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 .audio-header button {
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
 }
 #audioSeek {
-    width: 100%;
-    margin: 10px 0;
+    width: 100%;
+    margin: 10px 0;
 }
 .audio-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .audio-controls button {
-    background: #3f51b5;
-    color:white;
-    border:none;
-    padding:10px 12px;
-    border-radius:50%;
-    cursor:pointer;
+    background: #3f51b5;
+    color:white;
+    border:none;
+    padding:10px 12px;
+    border-radius:50%;
+    cursor:pointer;
 }
 .audio-controls input {
-    flex-grow: 1;
+    flex-grow: 1;
 }
 </style>
 </head>
@@ -318,76 +326,73 @@ a { text-decoration:none; color:inherit; }
 <body>
 
 <nav class="top-nav">
-  <div class="logo">매일하루</div>
-  <div class="top-nav-right">
-    <a href="https://naver.me/x6x6E7L2" target="_blank" class="top-nav-link">구독신청</a>
-    <a href="https://naver.me/531Nnlro" target="_blank" class="top-nav-button"><i class="fas fa-edit"></i> 전자책 투고하기</a>
-  </div>
+  <div class="logo">매일하루</div>
+  <div class="top-nav-right">
+    <a href="https://naver.me/x6x6E7L2" target="_blank" class="top-nav-link">구독신청</a>
+    <a href="https://naver.me/531Nnlro" target="_blank" class="top-nav-button"><i class="fas fa-edit"></i> 전자책 투고하기</a>
+  </div>
 </nav>
 
 <div class="container">
 
-  <!-- 상단 이미지 배너 -->
-  <div class="hero-banner">
-    <div class="hero-banner-content">
-      <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
-      <p>시민들의 이야기가 들리는 곳, 매일하루는 여러분의 하루가 조금 더 즐겁고 행복하길 바랍니다.
+    <div class="hero-banner">
+    <div class="hero-banner-content">
+      <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
+      <p>시민들의 이야기가 들리는 곳, 매일하루는 여러분의 하루가 조금 더 즐겁고 행복하길 바랍니다.
 부산 시민들의 사계절이 담긴 이야기를 바탕으로 전자책을 발행하고, 메일링 서비스를 통해 마음에 닿는 이야기를 전합니다.
 메일 구독으로 어디서든, 여러분의 메일함에서 계절을 담은 책 한 권을 꺼내 읽어보세요.</p>
-    </div>
+    </div>
 
-    <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
-  </div>
+    <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
+  </div>
 
-  <!-- 영상 -->
-  <div class="video-banner">
-    <video id="mainVideo" playsinline>
-      <source src="video/banner.mp4" type="video/mp4">
-      지원되지 않는 브라우저입니다.
-    </video>
+    <div class="video-banner">
+    <video id="mainVideo" playsinline>
+      <source src="video/banner.mp4" type="video/mp4">
+      지원되지 않는 브라우저입니다.
+    </video>
 
-    <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
-      📖 전자책으로 보기
-    </a>
+    <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
+      📖 전자책으로 보기
+    </a>
 
-    <div id="videoControls">
-      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
-      <input type="range" id="progressControl" min="0" max="100" value="0" step="0.1">
-      <i class="fas fa-volume-up" id="volumeIcon"></i>
-      <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.5">
-      <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
-    </div>
-  </div>
+    <div id="videoControls">
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <input type="range" id="progressControl" min="0" max="100" value="0" step="0.1">
+      <i class="fas fa-volume-up" id="volumeIcon"></i>
+      <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.5">
+      <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+    </div>
+  </div>
 
-  <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
-  <div class="season-panels" id="seasonPanels"></div>
+  <h2 class="section-title">온라인 열람실: 사계절 테마</h2>
+  <div class="season-panels" id="seasonPanels"></div>
 
 </div>
 
 <div class="footer-actions">
-  <a href="https://naver.me/x6x6E7L2" target="_blank" class="button"><i class="fas fa-envelope"></i> 메일링 서비스 구독</a>
+  <a href="https://naver.me/x6x6E7L2" target="_blank" class="button"><i class="fas fa-envelope"></i> 메일링 서비스 구독</a>
 </div>
 
-<!-- 오디오 팝업 -->
 <div id="audioPopup" class="audio-popup">
-    <div class="audio-header">
-        <span id="audioTitle">오디오북 재생</span>
-        <button id="audioCloseBtn"><i class="fas fa-times"></i></button>
-    </div>
+    <div class="audio-header">
+        <span id="audioTitle">오디오북 재생</span>
+        <button id="audioCloseBtn"><i class="fas fa-times"></i></button>
+    </div>
 
-    <input type="range" id="audioSeek" value="0" min="0" max="100" step="0.1">
+    <input type="range" id="audioSeek" value="0" min="0" max="100" step="0.1">
 
-    <div class="audio-controls">
-        <button id="audioPlayPause"><i class="fas fa-play"></i></button>
-        <input type="range" id="audioVolume" min="0" max="1" step="0.05" value="0.8">
-    </div>
+    <div class="audio-controls">
+        <button id="audioPlayPause"><i class="fas fa-play"></i></button>
+        <input type="range" id="audioVolume" min="0" max="1" step="0.05" value="0.8">
+    </div>
 
-    <audio id="audioPlayer"></audio>
+    <audio id="audioPlayer"></audio>
 </div>
 
 <script>
 /* ------------------------------
-     🎬 영상 제어
+     🎬 영상 제어
 ------------------------------ */
 const video = document.getElementById("mainVideo");
 const playPauseBtn = document.getElementById("playPauseBtn");
@@ -401,79 +406,79 @@ video.pause();
 playIcon.classList.replace("fa-pause", "fa-play");
 
 playPauseBtn.addEventListener("click", () => {
-    if(video.paused){
-        video.play();
-        playIcon.classList.replace("fa-play", "fa-pause");
-    } else {
-        video.pause();
-        playIcon.classList.replace("fa-pause", "fa-play");
-    }
+    if(video.paused){
+        video.play();
+        playIcon.classList.replace("fa-play", "fa-pause");
+    } else {
+        video.pause();
+        playIcon.classList.replace("fa-pause", "fa-play");
+    }
 });
 
 volumeControl.addEventListener("input", () => {
-    video.volume = volumeControl.value;
-    if(video.volume === 0){
-        volumeIcon.classList.replace("fa-volume-up", "fa-volume-mute");
-    } else {
-        volumeIcon.classList.replace("fa-volume-mute", "fa-volume-up");
-    }
+    video.volume = volumeControl.value;
+    if(video.volume === 0){
+        volumeIcon.classList.replace("fa-volume-up", "fa-volume-mute");
+    } else {
+        volumeIcon.classList.replace("fa-volume-mute", "fa-volume-up");
+    }
 });
 
 fullscreenBtn.addEventListener("click", () => {
-    if (!document.fullscreenElement) {
-        video.parentElement.requestFullscreen();
-    } else {
-        document.exitFullscreen();
-    }
+    if (!document.fullscreenElement) {
+        video.parentElement.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
 });
 
 video.addEventListener("timeupdate", () => {
-    if(video.duration) progressControl.value = (video.currentTime / video.duration) * 100;
+    if(video.duration) progressControl.value = (video.currentTime / video.duration) * 100;
 });
 
 progressControl.addEventListener("input", () => {
-    if(video.duration) video.currentTime = (progressControl.value / 100) * video.duration;
+    if(video.duration) video.currentTime = (progressControl.value / 100) * video.duration;
 });
 
 
 /* ------------------------------
-     🍃 시즌 카드 자동 생성
+     🍃 시즌 카드 자동 생성
 ------------------------------ */
 const seasonPanelsElement = document.getElementById('seasonPanels');
 
 const seasonData = [
-    { theme: "봄", title: "새로운 시작", desc: "이 책에서의 봄은 양면성이 분명하지만 긍정적인 기대감을 갖고 있습니다. 그 마음을 간직하다보면 새로운 시작을 향한 용기를 얻을 수 있습니다. ", imageUrl: "images/spring.png", epubFile: "book_spring.epub", audioFile: "audio/spring.mp3" },
-    { theme: "여름", title: "뜨거운 열정", desc: "여름은 강렬한 햇살에도 즐거움을 놓치지 않는 순간들을 담고 있습니다. 뜨거운 계절 속에서 숨겨진 열정과 기쁨을 만나보세요. ", imageUrl: "images/summer.png", epubFile: "book_summer.epub", audioFile: "audio/summer.mp3" },
-    { theme: "가을", title: "사색의 계절", desc: "가을은 마음을 조용히 돌아볼 수 있게 해주는 계절입니다. 낙엽이 흩날리는 행복 사이에서 일상의 아름다움을 느낄 수 있습니다.", imageUrl: "images/autumn.png", epubFile: "book_autumn.epub", audioFile: "audio/autumn.mp3" },
-    { theme: "겨울", title: "따뜻한 위로", desc: "차가운 바람이 불어오는 겨울 곳곳에서는 사람들의 온기가 잔잔하게 퍼집니다. 그 안에서만 느낄 수 있는 온기를 천천히 떠올려보세요.", imageUrl: "images/winter.png", epubFile: "book_winter.epub", audioFile: "audio/winter.mp3" }
+    { theme: "봄", title: "새로운 시작", desc: "이 책에서의 봄은 양면성이 분명하지만 긍정적인 기대감을 갖고 있습니다. 그 마음을 간직하다보면 새로운 시작을 향한 용기를 얻을 수 있습니다. ", imageUrl: "images/spring.png", epubFile: "book_spring.epub", audioFile: "audio/spring.mp3" },
+    { theme: "여름", title: "뜨거운 열정", desc: "여름은 강렬한 햇살에도 즐거움을 놓치지 않는 순간들을 담고 있습니다. 뜨거운 계절 속에서 숨겨진 열정과 기쁨을 만나보세요. ", imageUrl: "images/summer.png", epubFile: "book_summer.epub", audioFile: "audio/summer.mp3" },
+    { theme: "가을", title: "사색의 계절", desc: "가을은 마음을 조용히 돌아볼 수 있게 해주는 계절입니다. 낙엽이 흩날리는 행복 사이에서 일상의 아름다움을 느낄 수 있습니다.", imageUrl: "images/autumn.png", epubFile: "book_autumn.epub", audioFile: "audio/autumn.mp3" },
+    { theme: "겨울", title: "따뜻한 위로", desc: "차가운 바람이 불어오는 겨울 곳곳에서는 사람들의 온기가 잔잔하게 퍼집니다. 그 안에서만 느낄 수 있는 온기를 천천히 떠올려보세요.", imageUrl: "images/winter.png", epubFile: "book_winter.epub", audioFile: "audio/winter.mp3" }
 ];
 
 function createSeasonPanel(season){
-  const viewerLink = `viewer.html?epub=${encodeURIComponent(season.epubFile)}&title=${encodeURIComponent(season.title)}`;
-  return `
-  <div class="season-panel">
-    <a href="${viewerLink}" target="_blank">
-      <div class="season-panel-image" style="background-image: url('${season.imageUrl}');"></div>
-    </a>
-    <div class="season-panel-content">
-      <p>${season.desc}</p>
-      <div class="panel-actions">
-        <a href="${viewerLink}" target="_blank" class="panel-button read-button">
-          <i class="fas fa-book-open"></i> 전자책 열람하기
-        </a>
-        <button class="panel-button audio-button" onclick="openAudioPlayer('${season.audioFile}', '${season.title}')">
-          <i class="fas fa-headphones"></i> 오디오북으로 듣기
-        </button>
-      </div>
-    </div>
-  </div>`;
+  const viewerLink = `viewer.html?epub=${encodeURIComponent(season.epubFile)}&title=${encodeURIComponent(season.title)}`;
+  return `
+  <div class="season-panel">
+    <a href="${viewerLink}" target="_blank">
+      <div class="season-panel-image" style="background-image: url('${season.imageUrl}');"></div>
+    </a>
+    <div class="season-panel-content">
+      <p>${season.desc}</p>
+      <div class="panel-actions">
+        <a href="${viewerLink}" target="_blank" class="panel-button read-button">
+          <i class="fas fa-book-open"></i> 전자책 열람하기
+        </a>
+        <button class="panel-button audio-button" onclick="openAudioPlayer('${season.audioFile}', '${season.title}')">
+          <i class="fas fa-headphones"></i> 오디오북으로 듣기
+        </button>
+      </div>
+    </div>
+  </div>`;
 }
 
 seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 
 
 /* ------------------------------
-     🎧 오디오 플레이어
+     🎧 오디오 플레이어
 ------------------------------ */
 const audioPopup = document.getElementById("audioPopup");
 const audioPlayer = document.getElementById("audioPlayer");
@@ -485,44 +490,44 @@ const audioSeek = document.getElementById("audioSeek");
 const audioIcon = audioPlayPause.querySelector("i");
 
 function openAudioPlayer(audioFile, title) {
-    audioPopup.style.display = "block";
-    audioTitle.textContent = `${title} (오디오북)`;
-    audioPlayer.src = audioFile;
-    audioPlayer.volume = audioVolume.value;
+    audioPopup.style.display = "block";
+    audioTitle.textContent = `${title} (오디오북)`;
+    audioPlayer.src = audioFile;
+    audioPlayer.volume = audioVolume.value;
 
-    audioPlayer.addEventListener("loadedmetadata", () => {
-        audioSeek.max = audioPlayer.duration;
-    });
+    audioPlayer.addEventListener("loadedmetadata", () => {
+        audioSeek.max = audioPlayer.duration;
+    });
 
-    audioPlayer.play();
-    audioIcon.classList.replace("fa-play", "fa-pause");
+    audioPlayer.play();
+    audioIcon.classList.replace("fa-play", "fa-pause");
 }
 
 audioPlayPause.addEventListener("click", () => {
-    if (audioPlayer.paused) {
-        audioPlayer.play();
-        audioIcon.classList.replace("fa-play", "fa-pause");
-    } else {
-        audioPlayer.pause();
-        audioIcon.classList.replace("fa-pause", "fa-play");
-    }
+    if (audioPlayer.paused) {
+        audioPlayer.play();
+        audioIcon.classList.replace("fa-play", "fa-pause");
+    } else {
+        audioPlayer.pause();
+        audioIcon.classList.replace("fa-pause", "fa-play");
+    }
 });
 
 audioVolume.addEventListener("input", () => {
-    audioPlayer.volume = audioVolume.value;
+    audioPlayer.volume = audioVolume.value;
 });
 
 audioSeek.addEventListener("input", () => {
-    audioPlayer.currentTime = audioSeek.value;
+    audioPlayer.currentTime = audioSeek.value;
 });
 
 audioPlayer.addEventListener("timeupdate", () => {
-    audioSeek.value = audioPlayer.currentTime;
+    audioSeek.value = audioPlayer.currentTime;
 });
 
 audioCloseBtn.addEventListener("click", () => {
-    audioPlayer.pause();
-    audioPopup.style.display = "none";
+    audioPlayer.pause();
+    audioPopup.style.display = "none";
 });
 </script>
 
