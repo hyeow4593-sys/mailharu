@@ -28,7 +28,7 @@ body {
 a { text-decoration:none; color:inherit; }
 .container { max-width:1200px; margin:0 auto; padding:0 20px; }
 
-/* NAV */
+/* 상단 NAV */
 .top-nav {
     background:white;
     border-bottom:1px solid var(--border-light);
@@ -51,7 +51,7 @@ a { text-decoration:none; color:inherit; }
 }
 .top-nav-button:hover { background:#303f9f; }
 
-/* HERO BANNER */
+/* 상단 이미지 배너 */
 .hero-banner {
     background-image:url('images/top-banner.png');
     background-size:cover;
@@ -79,11 +79,11 @@ a { text-decoration:none; color:inherit; }
 }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
-
 .banner-button {
-    position:absolute;
-    left:30px;
-    bottom:30px;
+    /* 위치 변경: 왼쪽 하단으로 절대 배치 */
+    position: absolute;
+    left: 30px;
+    bottom: 30px;
     background:white;
     color:var(--primary-blue);
     padding:10px 20px;
@@ -108,6 +108,7 @@ a { text-decoration:none; color:inherit; }
     object-fit: cover;
 }
 
+/* 📘 전자책 버튼 */
 .ebook-button {
     position: absolute;
     top: 20px;
@@ -120,9 +121,11 @@ a { text-decoration:none; color:inherit; }
     font-size: 16px;
     z-index: 10;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: 0.2s;
 }
+.ebook-button:hover { background: #e8e8ff; }
 
-/* 비디오 커스텀 컨트롤 */
+/* 커스텀 비디오 컨트롤 */
 #videoControls {
     position: absolute;
     right: 20px;
@@ -166,6 +169,9 @@ a { text-decoration:none; color:inherit; }
 @media(min-width:768px){
     .season-panels { grid-template-columns:1fr 1fr; }
 }
+@media(min-width:1024px){
+    .season-panels { gap:40px; }
+}
 
 .season-panel {
     background:var(--card-bg);
@@ -176,6 +182,7 @@ a { text-decoration:none; color:inherit; }
     flex-direction:column;
     border:1px solid var(--border-light);
     transition: transform 0.2s, box-shadow 0.2s;
+    position:relative;
 }
 .season-panel:hover {
     transform:translateY(-5px);
@@ -189,6 +196,57 @@ a { text-decoration:none; color:inherit; }
     border-bottom:1px solid var(--border-light);
     position:relative;
 }
+.season-panel-image::before {
+    content:"";
+    position:absolute;
+    top:0; left:0; right:0; bottom:0;
+    background-color:rgba(0,0,0,0.3);
+    transition:0.2s;
+}
+.season-panel:hover .season-panel-image::before {
+    background-color:rgba(0,0,0,0.5);
+}
+.season-panel-content {
+    padding:20px 25px 25px;
+    flex-grow:1;
+    text-align:center;
+    position:relative;
+    z-index:2;
+    color:var(--text-dark);
+}
+.season-panel-content p {
+    color:var(--text-gray);
+    margin-bottom:20px;
+}
+
+.panel-actions {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+.panel-button {
+    display:block;
+    width:100%;
+    padding:12px 15px;
+    font-size:1rem;
+    border-radius:5px;
+    font-weight:500;
+    text-align:center;
+    transition:0.2s;
+    box-sizing:border-box;
+}
+.read-button {
+    background:var(--primary-blue);
+    color:white;
+    border:1px solid var(--primary-blue);
+}
+.read-button:hover { background:#303f9f; }
+.audio-button {
+    background:#FF5722;
+    color:white;
+    border:1px solid #FF5722;
+}
+.audio-button:hover { background:#E64A19; }
 
 /* 푸터 */
 .footer-actions {
@@ -198,8 +256,18 @@ a { text-decoration:none; color:inherit; }
     text-align:center;
     margin-top:40px;
 }
+.footer-actions .button {
+    display:inline-flex;
+    align-items:center;
+    padding:12px 25px;
+    border-radius:6px;
+    font-weight:500;
+    cursor:pointer;
+    box-shadow:0 1px 3px rgba(60,64,67,0.1);
+    margin:0 5px;
+}
 
-/* 오디오 플레이어 */
+/* 오디오 팝업 */
 .audio-popup {
     position: fixed;
     bottom: 30px;
@@ -219,15 +287,31 @@ a { text-decoration:none; color:inherit; }
     font-weight: 700;
     margin-bottom: 10px;
 }
-#audioSeek { width: 100%; margin: 10px 0; }
-.audio-controls { display:flex; gap:10px; align-items:center; }
+.audio-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+#audioSeek {
+    width: 100%;
+    margin: 10px 0;
+}
+.audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .audio-controls button {
-    background:#3f51b5;
+    background: #3f51b5;
     color:white;
     border:none;
     padding:10px 12px;
     border-radius:50%;
     cursor:pointer;
+}
+.audio-controls input {
+    flex-grow: 1;
 }
 </style>
 </head>
@@ -244,25 +328,30 @@ a { text-decoration:none; color:inherit; }
 
 <div class="container">
 
-  <!-- HERO -->
+  <!-- 상단 이미지 배너 -->
   <div class="hero-banner">
     <div class="hero-banner-content">
       <h2>시민이 만드는 책, 도서관이 발행하는 책</h2>
       <p>시민들의 이야기가 들리는 곳, 매일하루는 여러분의 하루가 조금 더 즐겁고 행복하길 바랍니다.
 부산 시민들의 사계절이 담긴 이야기를 바탕으로 전자책을 발행하고, 메일링 서비스를 통해 마음에 닿는 이야기를 전합니다.
 메일 구독으로 어디서든, 여러분의 메일함에서 계절을 담은 책 한 권을 꺼내 읽어보세요.</p>
+      <!-- (텍스트 영역은 그대로 두었고 버튼은 아래에 절대위치로 배치됨) -->
     </div>
+    <!-- 왼쪽 하단 구독 버튼 (절대 위치) -->
     <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
   </div>
 
-  <!-- VIDEO -->
+  <!-- 영상 배너 -->
   <div class="video-banner">
     <video id="mainVideo" playsinline>
       <source src="video/banner.mp4" type="video/mp4">
       지원되지 않는 브라우저입니다.
     </video>
 
-    <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">📖 전자책으로 보기</a>
+    <!-- 📘 전자책으로 보기 버튼 (연결: banner.epub / 반려동물) -->
+    <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
+      📖 전자책으로 보기
+    </a>
 
     <div id="videoControls">
       <button id="playPauseBtn"><i class="fas fa-play"></i></button>
@@ -300,7 +389,7 @@ a { text-decoration:none; color:inherit; }
 </div>
 
 <script>
-/* VIDEO */
+/* 영상 제어 */
 const video = document.getElementById("mainVideo");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const volumeControl = document.getElementById("volumeControl");
@@ -310,29 +399,27 @@ const volumeIcon = document.getElementById("volumeIcon");
 const playIcon = playPauseBtn.querySelector("i");
 
 video.pause();
+playIcon.classList.replace("fa-pause", "fa-play");
 
-/* 재생/정지 */
 playPauseBtn.addEventListener("click", () => {
     if(video.paused){
         video.play();
-        playIcon.classList.replace("fa-play","fa-pause");
+        playIcon.classList.replace("fa-play", "fa-pause");
     } else {
         video.pause();
-        playIcon.classList.replace("fa-pause","fa-play");
+        playIcon.classList.replace("fa-pause", "fa-play");
     }
 });
 
-/* 볼륨 */
 volumeControl.addEventListener("input", () => {
     video.volume = volumeControl.value;
     if(video.volume === 0){
-        volumeIcon.classList.replace("fa-volume-up","fa-volume-mute");
+        volumeIcon.classList.replace("fa-volume-up", "fa-volume-mute");
     } else {
-        volumeIcon.classList.replace("fa-volume-mute","fa-volume-up");
+        volumeIcon.classList.replace("fa-volume-mute", "fa-volume-up");
     }
 });
 
-/* 전체화면 */
 fullscreenBtn.addEventListener("click", () => {
     if (!document.fullscreenElement) {
         video.parentElement.requestFullscreen();
@@ -341,28 +428,22 @@ fullscreenBtn.addEventListener("click", () => {
     }
 });
 
-/* 재생바 진행 */
 video.addEventListener("timeupdate", () => {
-    if(video.duration) {
-        progressControl.value = (video.currentTime / video.duration) * 100;
-    }
+    if(video.duration) progressControl.value = (video.currentTime / video.duration) * 100;
 });
 
-/* seek */
 progressControl.addEventListener("input", () => {
-    if(video.duration) {
-        video.currentTime = (progressControl.value / 100) * video.duration;
-    }
+    if(video.duration) video.currentTime = (progressControl.value / 100) * video.duration;
 });
 
-/* 시즌 카드 데이터 */
-const seasonPanelsElement = document.getElementById("seasonPanels");
+/* 시즌 카드 */
+const seasonPanelsElement = document.getElementById('seasonPanels');
 
 const seasonData = [
-  { theme:"봄", title:"새로운 시작", desc:"이 책에서의 봄은 양면성이 분명하지만 긍정적인 기대감을 갖고 있습니다.", imageUrl:"images/spring.png", epubFile:"book_spring.epub", audioFile:"audio/spring.mp3" },
-  { theme:"여름", title:"뜨거운 열정", desc:"여름은 강렬한 햇살에도 즐거움을 놓치지 않는 순간들을 담고 있습니다.", imageUrl:"images/summer.png", epubFile:"book_summer.epub", audioFile:"audio/summer.mp3" },
-  { theme:"가을", title:"사색의 계절", desc:"가을은 마음을 조용히 돌아볼 수 있게 해주는 계절입니다.", imageUrl:"images/autumn.png", epubFile:"book_autumn.epub", audioFile:"audio/autumn.mp3" },
-  { theme:"겨울", title:"따뜻한 위로", desc:"차가운 바람 속에서도 사람들의 온기가 잔잔하게 퍼집니다.", imageUrl:"images/winter.png", epubFile:"book_winter.epub", audioFile:"audio/winter.mp3" }
+    { theme: "봄", title: "새로운 시작", desc: "이 책에서의 봄은 양면성이 분명하지만 긍정적인 기대감을 갖고 있습니다. 그 마음을 간직하다보면 새로운 시작을 향한 용기를 얻을 수 있습니다. ", imageUrl: "images/spring.png", epubFile: "book_spring.epub", audioFile: "audio/spring.mp3" },
+    { theme: "여름", title: "뜨거운 열정", desc: "여름은 강렬한 햇살에도 즐거움을 놓치지 않는 순간들을 담고 있습니다. 뜨거운 계절 속에서 숨겨진 열정과 기쁨을 만나보세요. ", imageUrl: "images/summer.png", epubFile: "book_summer.epub", audioFile: "audio/summer.mp3" },
+    { theme: "가을", title: "사색의 계절", desc: "가을은 마음을 조용히 돌아볼 수 있게 해주는 계절입니다. 낙엽이 흩날리는 행복 사이에서 일상의 아름다움을 느낄 수 있습니다.", imageUrl: "images/autumn.png", epubFile: "book_autumn.epub", audioFile: "audio/autumn.mp3" },
+    { theme: "겨울", title: "따뜻한 위로", desc: "차가운 바람이 불어오는 겨울 곳곳에서는 사람들의 온기가 잔잔하게 퍼집니다. 그 안에서만 느낄 수 있는 온기를 천천히 떠올려보세요.", imageUrl: "images/winter.png", epubFile: "book_winter.epub", audioFile: "audio/winter.mp3" }
 ];
 
 function createSeasonPanel(season){
@@ -370,7 +451,7 @@ function createSeasonPanel(season){
   return `
   <div class="season-panel">
     <a href="${viewerLink}" target="_blank">
-      <div class="season-panel-image" style="background-image:url('${season.imageUrl}')"></div>
+      <div class="season-panel-image" style="background-image: url('${season.imageUrl}');"></div>
     </a>
     <div class="season-panel-content">
       <p>${season.desc}</p>
@@ -378,7 +459,7 @@ function createSeasonPanel(season){
         <a href="${viewerLink}" target="_blank" class="panel-button read-button">
           <i class="fas fa-book-open"></i> 전자책 열람하기
         </a>
-        <button class="panel-button audio-button" onclick="openAudioPlayer('${season.audioFile}','${season.title}')">
+        <button class="panel-button audio-button" onclick="openAudioPlayer('${season.audioFile}', '${season.title}')">
           <i class="fas fa-headphones"></i> 오디오북으로 듣기
         </button>
       </div>
@@ -386,7 +467,7 @@ function createSeasonPanel(season){
   </div>`;
 }
 
-seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join("");
+seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 
 /* 오디오 플레이어 */
 const audioPopup = document.getElementById("audioPopup");
@@ -398,11 +479,10 @@ const audioVolume = document.getElementById("audioVolume");
 const audioSeek = document.getElementById("audioSeek");
 const audioIcon = audioPlayPause.querySelector("i");
 
-/* 팝업 열기 */
-function openAudioPlayer(file,title){
-    audioPopup.style.display="block";
+function openAudioPlayer(audioFile, title) {
+    audioPopup.style.display = "block";
     audioTitle.textContent = `${title} (오디오북)`;
-    audioPlayer.src = file;
+    audioPlayer.src = audioFile;
     audioPlayer.volume = audioVolume.value;
 
     audioPlayer.addEventListener("loadedmetadata", () => {
@@ -410,45 +490,39 @@ function openAudioPlayer(file,title){
     });
 
     audioPlayer.play();
-    audioIcon.classList.replace("fa-play","fa-pause");
+    audioIcon.classList.replace("fa-play", "fa-pause");
 }
 
-/* 닫기 */
-audioCloseBtn.addEventListener("click", () => {
-    audioPlayer.pause();
-    audioPopup.style.display="none";
-});
-
-/* 플레이/일시정지 */
 audioPlayPause.addEventListener("click", () => {
-    if(audioPlayer.paused){
+    if (audioPlayer.paused) {
         audioPlayer.play();
-        audioIcon.classList.replace("fa-play","fa-pause");
+        audioIcon.classList.replace("fa-play", "fa-pause");
     } else {
         audioPlayer.pause();
-        audioIcon.classList.replace("fa-pause","fa-play");
+        audioIcon.classList.replace("fa-pause", "fa-play");
     }
 });
 
-/* 볼륨 */
 audioVolume.addEventListener("input", () => {
     audioPlayer.volume = audioVolume.value;
 });
 
-/* 재생바 */
+audioSeek.addEventListener("input", () => {
+    audioPlayer.currentTime = audioSeek.value;
+});
+
 audioPlayer.addEventListener("timeupdate", () => {
     audioSeek.value = audioPlayer.currentTime;
 });
 
-/* 시킹 */
-audioSeek.addEventListener("input", () => {
-    audioPlayer.currentTime = audioSeek.value;
+audioCloseBtn.addEventListener("click", () => {
+    audioPlayer.pause();
+    audioPopup.style.display = "none";
 });
 </script>
 
 </body>
 </html>
-
 
 
 
