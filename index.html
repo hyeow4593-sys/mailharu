@@ -80,7 +80,6 @@ a { text-decoration:none; color:inherit; }
 .hero-banner-content h2 { font-size:2.2em; margin:0 0 10px 0; font-weight:700; }
 .hero-banner-content p { font-size:1em; margin-bottom:20px; }
 .banner-button {
-    /* 위치 변경: 왼쪽 하단으로 절대 배치 */
     position: absolute;
     left: 30px;
     bottom: 30px;
@@ -125,7 +124,7 @@ a { text-decoration:none; color:inherit; }
 }
 .ebook-button:hover { background: #e8e8ff; }
 
-/* 커스텀 비디오 컨트롤 */
+/* 비디오 커스텀 컨트롤 */
 #videoControls {
     position: absolute;
     right: 20px;
@@ -335,20 +334,18 @@ a { text-decoration:none; color:inherit; }
       <p>시민들의 이야기가 들리는 곳, 매일하루는 여러분의 하루가 조금 더 즐겁고 행복하길 바랍니다.
 부산 시민들의 사계절이 담긴 이야기를 바탕으로 전자책을 발행하고, 메일링 서비스를 통해 마음에 닿는 이야기를 전합니다.
 메일 구독으로 어디서든, 여러분의 메일함에서 계절을 담은 책 한 권을 꺼내 읽어보세요.</p>
-      <!-- (텍스트 영역은 그대로 두었고 버튼은 아래에 절대위치로 배치됨) -->
     </div>
-    <!-- 왼쪽 하단 구독 버튼 (절대 위치) -->
+
     <a href="https://naver.me/x6x6E7L2" target="_blank" class="banner-button">✉️ 구독 서비스 신청하기</a>
   </div>
 
-  <!-- 영상 배너 -->
+  <!-- 영상 -->
   <div class="video-banner">
     <video id="mainVideo" playsinline>
       <source src="video/banner.mp4" type="video/mp4">
       지원되지 않는 브라우저입니다.
     </video>
 
-    <!-- 📘 전자책으로 보기 버튼 (연결: banner.epub / 반려동물) -->
     <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
       📖 전자책으로 보기
     </a>
@@ -389,7 +386,9 @@ a { text-decoration:none; color:inherit; }
 </div>
 
 <script>
-/* 영상 제어 */
+/* ------------------------------
+     🎬 영상 제어
+------------------------------ */
 const video = document.getElementById("mainVideo");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const volumeControl = document.getElementById("volumeControl");
@@ -436,7 +435,10 @@ progressControl.addEventListener("input", () => {
     if(video.duration) video.currentTime = (progressControl.value / 100) * video.duration;
 });
 
-/* 시즌 카드 */
+
+/* ------------------------------
+     🍃 시즌 카드 자동 생성
+------------------------------ */
 const seasonPanelsElement = document.getElementById('seasonPanels');
 
 const seasonData = [
@@ -469,7 +471,10 @@ function createSeasonPanel(season){
 
 seasonPanelsElement.innerHTML = seasonData.map(createSeasonPanel).join('');
 
-/* 오디오 플레이어 */
+
+/* ------------------------------
+     🎧 오디오 플레이어
+------------------------------ */
 const audioPopup = document.getElementById("audioPopup");
 const audioPlayer = document.getElementById("audioPlayer");
 const audioTitle = document.getElementById("audioTitle");
@@ -523,7 +528,6 @@ audioCloseBtn.addEventListener("click", () => {
 
 </body>
 </html>
-
 
 
 
