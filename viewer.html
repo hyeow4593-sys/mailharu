@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매일하루 전자책 열람실</title>
+
+<!-- 폰트 / 아이콘 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+:root {
+  --primary-blue: #3f51b5;
+  --text-dark: #202124;
+  --text-gray: #5f6368;
+  --border-light: #dadce0;
+}
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f4f6f9;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+nav {
+  background-color: white;
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+}
+
+nav .logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+nav .btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+button, a.button {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  text-decoration: none;
+}
+
+button:hover, a.button:hover {
+  background-color: #303f9f;
+}
+
+#viewer-container {
+  flex: 1;
+  height: calc(100vh - 55px);
+  overflow: hidden;
+  background: white;
+  position: relative;
+}
+
+#reader {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#status {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  padding: 6px;
+  border-top: 1px solid #ddd;
+  background: #fafafa;
+}
+
+.error-message {
+  text-align: center;
+  color: #d32f2f;
+  padding: 40px;
+  font-size: 1.1rem;
+}
+
+.side-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  z-index: 50;
+}
+
+#sidePrev { left: 10px; }
+#sideNext { right: 10px; }
+
+.side-button:hover { background: rgba(0,0,0,0.7); }
+</style>
+</head>
+
+<body>
+<nav>
+  <a href="index.html" class="logo">📘 매일하루</a>
+  <div class="btn-group">
+    <button id="btnPrev"><i class="fas fa-arrow-left"></i></button>
+    <button id="btnNext"><i class="fas fa-arrow-right"></i></button>
+    <button id="btnFontUp">A+</button>
+    <button id="btnFontDown">A-</button>
+    <a href="index.html" class="button"><i class="fas fa-home"></i> 홈으로</a>
+  </div>
+</nav>
+
+<div id="viewer-container">
+  <div id="reader"></div>
+  <button id="sidePrev" class="side-button"><i class="fas fa-chevron-left"></i></button>
+  <button id="sideNext" class="side-button"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<div id="status">로딩 중...</div>
+
+<!-- JSZip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<!-- ePub.js -->
+<script src="https://unpkg.com/epubjs/dist/epub.min.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const epubFile = params.get("epub");  // example: banner.epub
+const bookTitle = params.get("title") || "전자책";
+
+document.title = `${bookTitle} | 매일하루 전자책`;
+
+const status = document.getElementById("status");
+const reader = document.getElementById("reader");
+
+if (!epubFile) {
+  document.body.innerHTML =
+    '<div class="error-message">❌ ePub 경로가 지정되지 않았습니다.<br> index.html에서 올바른 링크로 접근해주세요.</div>';
+  throw new Error("No epub path");
+}
+
+async function startViewer() {
+  try {
+    status.textContent = "📦 전자책 파일을 불러오는 중...";
+
+    const book = ePub(`epubs/${epubFile}`);
+    const rendition = book.renderTo(reader, {
+      width: "100%",
+      height: "100%",
+      spread: "auto"
+    });
+
+    let fontSize = 100;
+
+    rendition.themes.default({
+      "body": {
+        "font-family": "'Noto Sans KR', sans-serif",
+        "line-height": "1.7",
+        "padding": "24px"
+      }
+    });
+
+    await rendition.display();
+    status.textContent = "✅ 로드 완료";
+
+    // 상단 버튼
+    document.getElementById("btnPrev").onclick = () => rendition.prev();
+    document.getElementById("btnNext").onclick = () => rendition.next();
+
+    document.getElementById("btnFontUp").onclick = () => {
+      fontSize = Math.min(fontSize + 10, 200);
+      rendition.themes.fontSize(fontSize + "%");
+    };
+
+    document.getElementById("btnFontDown").onclick = () => {
+      fontSize = Math.max(fontSize - 10, 60);
+      rendition.themes.fontSize(fontSize + "%");
+    };
+
+    // 사이드 버튼
+    document.getElementById("sidePrev").onclick = () => rendition.prev();
+    document.getElementById("sideNext").onclick = () => rendition.next();
+
+    // 키보드 화살표
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight") rendition.next();
+      if (e.key === "ArrowLeft") rendition.prev();
+    });
+
+  } catch (err) {
+    console.error(err);
+    document.body.innerHTML =
+      `<div class="error-message">❌ 전자책을 열 수 없습니다.<br>${err.message}</div>`;
+  }
+}
+
+startViewer();
+</script>
+
+</body>
+</html>
+
