@@ -342,11 +342,13 @@ a { text-decoration:none; color:inherit; }
   </div>
 
   <!-- 영상 배너 -->
-  <div class="video-banner">
-    <video id="mainVideo" playsinline>
-      <source src="video/banner.mp4" type="video/mp4">
-      지원되지 않는 브라우저입니다.
+ <div class="video-container">
+    <video id="mainVideo" autoplay muted playsinline controls>
+        <source src="video/banner.mp4" type="video/mp4">
+        브라우저가 영상을 지원하지 않습니다.
     </video>
+</div>
+
 
     <!-- 📘 전자책으로 보기 버튼 (연결: banner.epub / 반려동물) -->
     <a href="viewer.html?epub=banner.epub&title=반려동물" class="ebook-button">
