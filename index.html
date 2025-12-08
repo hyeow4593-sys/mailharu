@@ -91,20 +91,21 @@ a { text-decoration:none; color:inherit; }
     z-index:2;
 }
 
-/* 영상 배너 */
+/* 🎥 영상 배너 (16:9 비율 유지) */
 .video-banner {
-    width: 100%;
-    height: 55vh;
-    margin: 20px 0 50px 0;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width:100%;
+    aspect-ratio:16 / 9;
+    margin:20px 0 50px 0;
+    border-radius:12px;
+    overflow:hidden;
+    position:relative;
+    box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
 .video-banner video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width:100%;
+    height:100%;
+    object-fit:contain; /* 🔥 영상 전체 보이기 */
+    background:black;
 }
 
 /* 📘 전자책 버튼 */
@@ -528,6 +529,7 @@ audioCloseBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
 
 
 
